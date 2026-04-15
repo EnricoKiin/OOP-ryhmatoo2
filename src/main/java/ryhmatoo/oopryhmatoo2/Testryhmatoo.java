@@ -2,11 +2,14 @@ package ryhmatoo.oopryhmatoo2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import javafx.scene.control.TextArea;
 
 /**
  * Peaklass
  */
 public class Testryhmatoo {
+
+    private TextArea teadeteLogi;
 
     /**
      * Küsib mängijalt nime. Default Piro Kunn

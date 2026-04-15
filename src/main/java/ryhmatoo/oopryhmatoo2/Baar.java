@@ -1,16 +1,20 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.List;
+import javafx.scene.control.TextArea;
 
 /**
  * Algse mängu ainuke vastase tüüp.
  */
 public class Baar extends Vastane {
 
-    public Baar(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
+    private TextArea teadeteLogi;
+
+    public Baar(String nimi, int elud, double kaitseProtsent, int rynda_dmg, TextArea logi) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);
         lisaRyndelaused();
         lisaKaitselaused();
+        this.teadeteLogi = logi;
     }
 
     /**
@@ -20,8 +24,8 @@ public class Baar extends Vastane {
     public void ryndeBoost() {
         super.ryndeBoost();
 
-        System.out.println(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema");
-        System.out.println(this.toString() + " ründab tugevamalt!");
+        teadeteLogi.appendText((this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n");
+        teadeteLogi.appendText(this.toString() + " ründab tugevamalt!" + "\n");
     }
 
     /**

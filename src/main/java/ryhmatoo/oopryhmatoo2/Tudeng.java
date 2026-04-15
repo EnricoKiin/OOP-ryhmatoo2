@@ -1,6 +1,7 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.List;
+import javafx.scene.control.TextArea;
 
 /**
  * Peategelane meie loos, kes võitleb erinevate vastastega.
@@ -9,6 +10,8 @@ import java.util.List;
 public class Tudeng extends Tegelane{
 
     private int punkte;
+    private TextArea teadeteLogi;
+
 
     public Tudeng(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);

@@ -1,6 +1,7 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.Scanner;
+import javafx.scene.control.TextArea;
 
 /**
  * Peamine klass, mis tegelb kogu tegelaste vahelise kokkupuudetega ja mängu loogika
@@ -9,6 +10,7 @@ import java.util.Scanner;
 public class Mäng {
     private Tudeng tudeng;
     private Vastane vastane;
+    private TextArea teadeteLogi;
 
     public Mäng(Tudeng tudeng, Vastane vastane) {
         this.tudeng = tudeng;
