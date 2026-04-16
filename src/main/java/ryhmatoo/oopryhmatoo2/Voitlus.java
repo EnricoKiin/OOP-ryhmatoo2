@@ -1,11 +1,14 @@
 package ryhmatoo.oopryhmatoo2;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Voitlus extends Application {
@@ -22,11 +25,18 @@ public class Voitlus extends Application {
 
         // tudengi pilt
         Image pilt = new Image("kriips.png");
-
         ImageView pildiVaade = new ImageView(pilt);
 
-        // paigutame paremale
-        suur.setRight(pildiVaade);
+        // Määrame pildi laiuse
+        pildiVaade.setFitWidth(80);
+        pildiVaade.setPreserveRatio(true); // Säilitab pildi proportsioonid
+
+        StackPane pildiKonteiner = new StackPane(pildiVaade);
+        StackPane.setAlignment(pildiVaade, Pos.BOTTOM_RIGHT);
+        pildiKonteiner.setPadding(new Insets(0, 300, 20, 0));
+
+        // paigutame konteineri paremale
+        suur.setRight(pildiKonteiner);
 
         // teksti "konsool"
         TextArea logi = new TextArea();
@@ -36,7 +46,7 @@ public class Voitlus extends Application {
         suur.setBottom(logi);
 
 
-        Scene stseen1 = new Scene(suur);
+        Scene stseen1 = new Scene(suur, 1200, 720);
 
         peaLava.setTitle("Võitlus");
 
