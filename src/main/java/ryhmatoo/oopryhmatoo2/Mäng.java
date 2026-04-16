@@ -12,9 +12,10 @@ public class Mäng {
     private Vastane vastane;
     private TextArea teadeteLogi;
 
-    public Mäng(Tudeng tudeng, Vastane vastane) {
+    public Mäng(Tudeng tudeng, Vastane vastane, TextArea logi) {
         this.tudeng = tudeng;
         this.vastane = vastane;
+        this.teadeteLogi = logi;
     }
 
     /**

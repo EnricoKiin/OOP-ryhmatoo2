@@ -30,7 +30,9 @@ public class Testryhmatoo {
     public static void main() {
         String nimi = otsustaNimi();
 
-        Tudeng tudeng = new Tudeng(nimi, 20, 0.5, 5);
+        TextArea teadeteLogi = new TextArea();
+
+        Tudeng tudeng = new Tudeng(nimi, 20, 0.5, 5, teadeteLogi);
 
         // Vastaste loomine abifunktsiooniga
         ArrayList<Vastane> vastased = new ArrayList<>();
@@ -43,17 +45,17 @@ public class Testryhmatoo {
 
         // Loopime kõik vastased läbi, kuni keegi sureb.
         for (Vastane vastane : vastased) {
-            Mäng mäng = new Mäng(tudeng, vastane);
+            Mäng mäng = new Mäng(tudeng, vastane, teadeteLogi);
             mäng.mängi();
 
             // Lisa shade, kui mängija ei saa hakkama
             if (!tudeng.onElus()) {
-                System.out.println("Kaotasid mängu. Get good kid");
+                teadeteLogi.appendText("Kaotasid mängu. Get good kid\n");
                 break;
             }
         }
         if (tudeng.onElus()) {
-            System.out.println("Lõpetasid mängu " + tudeng.getPunkte() + " punktiga!");
+            teadeteLogi.appendText("Lõpetasid mängu " + tudeng.getPunkte() + " punktiga!" + "\n");
         }
     }
 

@@ -13,9 +13,10 @@ public class Tudeng extends Tegelane{
     private TextArea teadeteLogi;
 
 
-    public Tudeng(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
+    public Tudeng(String nimi, int elud, double kaitseProtsent, int rynda_dmg, TextArea logi) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);
         this.punkte = 0;
+        this.teadeteLogi = logi;
     }
 
     /**
@@ -25,18 +26,18 @@ public class Tudeng extends Tegelane{
     public void saaStippi() {
         int maxElud = this.getMaxElud();
         int hetkelElud = this.getElud();
-        System.out.println("Leidsid maast viieka. Saad edasi juua");
+        teadeteLogi.appendText("Leidsid maast viieka. Saad edasi juua\n");
 
         // Elude andmise loogika
         // Esimene haru kui saab max eludeni tagasi ja teine kui ei saa
         int elusidJuurde = (int)(maxElud * 0.3);
         if (hetkelElud + elusidJuurde > maxElud) {
             this.setElud(maxElud);
-            System.out.println("Said kõik elud tagasi");
+            teadeteLogi.appendText("Said kõik elud tagasi\n");
         }
         else {
             this.setElud(hetkelElud + elusidJuurde);
-            System.out.println("Said " + elusidJuurde + " hp juurde");
+            teadeteLogi.appendText("Said " + elusidJuurde + " hp juurde" + "\n");
         }
     }
 
@@ -63,11 +64,11 @@ public class Tudeng extends Tegelane{
 
         // Lausete suvaline valik ja eraldi haru, kui peategelane otsustas end kaitsta (KAITSE tegevus)
         int valik = (int)(Math.random() * vastaseLaused.size());
-        System.out.println(vastaseLaused.get(valik));
+        teadeteLogi.appendText(vastaseLaused.get(valik) + "\n");
         if (this.getTegevus() == Tegevus.KAITSE) {
-            System.out.println("Kuid su lemmik laul hakkas mängima. Kaotad vähem elusid.");
+            teadeteLogi.appendText("Kuid su lemmik laul hakkas mängima. Kaotad vähem elusid.\n");
         }
-        System.out.println("Kaotasid "  + dmg + " elu");
+        teadeteLogi.appendText("Kaotasid "  + dmg + " elu" + "\n");
 
         super.kaotaElud(dmg);
 
