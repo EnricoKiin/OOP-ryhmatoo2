@@ -27,18 +27,16 @@ public class Testryhmatoo {
     /**
      * Tekitame Tudengi ja Vastase ning mängime surmani.
      */
-    public static void main() {
+    public static void main(TextArea teadeteLogi) {
         String nimi = otsustaNimi();
-
-        TextArea teadeteLogi = new TextArea();
 
         Tudeng tudeng = new Tudeng(nimi, 20, 0.5, 5, teadeteLogi);
 
         // Vastaste loomine abifunktsiooniga
         ArrayList<Vastane> vastased = new ArrayList<>();
-        Baar baar1 = looBaar("Möku", 1);
-        Baar baar2 = looBaar("Atso", 2);
-        Baar baar3 = looBaar("Seik", 3);
+        Baar baar1 = looBaar("Möku", 1, teadeteLogi);
+        Baar baar2 = looBaar("Atso", 2, teadeteLogi);
+        Baar baar3 = looBaar("Seik", 3, teadeteLogi);
         vastased.add(baar1);
         vastased.add(baar2);
         vastased.add(baar3);
@@ -66,7 +64,7 @@ public class Testryhmatoo {
      * @param raskusTase -- Raskustase. 1 kuni 3 ehk Easy, Medium, Hard
      * @return Tagastab Baari isendi
      */
-    public static Baar looBaar(String nimi, int raskusTase) {
+    public static Baar looBaar(String nimi, int raskusTase, TextArea logi) {
         /*
         Easy:
             Elud: 12-17
@@ -114,7 +112,7 @@ public class Testryhmatoo {
 
         }
 
-        Baar bar = new Baar(nimi, elud, kaitseProtsent, rynda_dmg);
+        Baar bar = new Baar(nimi, elud, kaitseProtsent, rynda_dmg, logi);
         return bar;
     }
 }
