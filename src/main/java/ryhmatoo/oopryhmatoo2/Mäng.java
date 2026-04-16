@@ -32,8 +32,8 @@ public class Mäng {
      */
     public void mänguSeis() {
         puhastaEkraan();
-        System.out.println(vastane.toString() + ": " + vastane.getElud() + "hp");
-        System.out.println(tudeng.toString() + ": " + tudeng.getElud() + "hp");
+        teadeteLogi.appendText(vastane.toString() + ": " + vastane.getElud() + "hp" + "\n");
+        teadeteLogi.appendText(tudeng.toString() + ": " + tudeng.getElud() + "hp" + "\n");
     }
 
     /**
@@ -133,8 +133,8 @@ public class Mäng {
      */
     public void kaotus() {
         puhastaEkraan();
-        System.out.println("Surid ära!");
-        System.out.println("Lõpetasid: " + tudeng.getPunkte() + " punktiga");
+        teadeteLogi.appendText("Surid ära!\n");
+        teadeteLogi.appendText("Lõpetasid: " + tudeng.getPunkte() + " punktiga" + "\n");
     }
 
     /**
@@ -144,8 +144,8 @@ public class Mäng {
     public void voit() {
         puhastaEkraan();
         int vastasePunktid = vastane.getPunkteVaart();
-        System.out.println("Tapsid ära " + vastane.toString());
-        System.out.println("Teenisid " + vastasePunktid + " punkti!");
+        teadeteLogi.appendText("Tapsid ära " + vastane.toString() + "\n");
+        teadeteLogi.appendText("Teenisid " + vastasePunktid + " punkti!" + "\n");
         tudeng.lisaPunkte(vastasePunktid);
     }
 
@@ -196,7 +196,7 @@ public class Mäng {
 
         // Olukord kui mõlemad kaitsevad
         if (vastaseOtsus == Tegevus.KAITSE && tudengiOtsus == Tegevus.KAITSE) {
-            System.out.println("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist.");
+            teadeteLogi.appendText("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist." + "\n");
         }
 
         // null kui keegi ei surnud

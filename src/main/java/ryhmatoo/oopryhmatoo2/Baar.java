@@ -24,7 +24,7 @@ public class Baar extends Vastane {
     public void ryndeBoost() {
         super.ryndeBoost();
 
-        teadeteLogi.appendText((this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n");
+        teadeteLogi.appendText(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n");
         teadeteLogi.appendText(this.toString() + " ründab tugevamalt!" + "\n");
     }
 
@@ -68,14 +68,14 @@ public class Baar extends Vastane {
     @Override
     public void kaotaElud(int dmg) {
         if (this.getTegevus()==Tegevus.KAITSE)
-            System.out.println("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu.");
+            teadeteLogi.appendText("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu." + "\n");
         else {
             // Lausete valik listist
             List<String> kaitselaused = this.getKaitselaused();
             int lauseValik = (int) (Math.random() * kaitselaused.size());
 
-            System.out.println(kaitselaused.get(lauseValik));
-            System.out.println(this.getNimi() + " kaotas " + dmg + " elu.");
+            teadeteLogi.appendText(kaitselaused.get(lauseValik) + "\n");
+            teadeteLogi.appendText(this.getNimi() + " kaotas " + dmg + " elu." + "\n");
         }
 
         super.kaotaElud(dmg);
