@@ -21,7 +21,7 @@ public class Voitlus extends Application {
         BorderPane suur = new BorderPane();
 
         // tudengi pilt
-        Image pilt = new Image("failinimi.jpg");
+        Image pilt = new Image("kriips.png");
 
         ImageView pildiVaade = new ImageView(pilt);
 
