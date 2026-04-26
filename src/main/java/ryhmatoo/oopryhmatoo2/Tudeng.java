@@ -21,7 +21,7 @@ public class Tudeng extends Tegelane{
 
     /**
      * Tudengi tegevus, kui ta otsustab teha BOOST. Lisab elusid 30% elusid juurde
-     * Ei lähe üke max elude, mis alguses määrati talle
+     * Ei lähe üle max elude, mis alguses määrati talle
      */
     public void saaStippi() {
         int maxElud = this.getMaxElud();
