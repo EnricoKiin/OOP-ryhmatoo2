@@ -21,6 +21,13 @@ public class Voitlus extends Application {
     }
 
 
+    private TextArea logi = new TextArea();
+
+    public TextArea getLogi() {
+        return logi;
+    }
+
+
     private Button looNupp(String tekst) {
 
         String tavaline = "-fx-background-color: #FF8C00; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
@@ -68,7 +75,6 @@ public class Voitlus extends Application {
 
 
         // teksti "konsool"
-        TextArea logi = new TextArea();
         logi.setEditable(false); // mängija ei saa sinna ise kirjutada
         logi.setWrapText(true); // tekst läheb järgmisele reale, kui aken saab läbi
 

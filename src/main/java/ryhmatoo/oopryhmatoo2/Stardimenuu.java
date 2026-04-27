@@ -39,6 +39,9 @@ public class Stardimenuu extends Application {
         Button mangiNupp = new Button("Alusta uus mäng");
         Button edetabel = new Button("Vaata edetabelit");
 
+        // avaneb vaheekraan, andmete sisestamiseks
+        mangiNupp.setOnAction(e -> EnneMangu.ava());
+
         nupud.getChildren().addAll(mangiNupp, edetabel);
 
 

@@ -11,24 +11,30 @@ public class Testryhmatoo {
 
     private TextArea teadeteLogi;
 
-    /**
-     * Küsib mängijalt nime. Default Piro Kunn
-     * @return Tagastab Tudengi nime
-     */
-    public static String otsustaNimi() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Vali endale nimi (Default: Piro Kunn; Vajuta ENTER): ");
-        String nimi = sc.nextLine();
-        if (nimi.isEmpty()) return "Piro Kunn";
-        else return nimi;
+
+    // käivitame Stardimenüü
+    public static void main(String[] args) {
+        javafx.application.Application.launch(Stardimenuu.class, args);
     }
+
+
+//    /**
+//     * Küsib mängijalt nime. Default Piro Kunn
+//     * @return Tagastab Tudengi nime
+//     */
+//    public static String otsustaNimi() {
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Vali endale nimi (Default: Piro Kunn; Vajuta ENTER): ");
+//        String nimi = sc.nextLine();
+//        if (nimi.isEmpty()) return "Piro Kunn";
+//        else return nimi;
+//    }
 
 
     /**
      * Tekitame Tudengi ja Vastase ning mängime surmani.
      */
-    public static void main(TextArea teadeteLogi) {
-        String nimi = otsustaNimi();
+    public static void main(TextArea teadeteLogi, String nimi) {
 
         Tudeng tudeng = new Tudeng(nimi, 20, 0.5, 5, teadeteLogi);
 
