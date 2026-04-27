@@ -1,6 +1,8 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.Scanner;
+
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 /**
@@ -33,8 +35,8 @@ public class Mäng {
      */
     public void mänguSeis() {
         puhastaEkraan();
-        teadeteLogi.appendText(vastane.toString() + ": " + vastane.getElud() + "hp" + "\n");
-        teadeteLogi.appendText(tudeng.toString() + ": " + tudeng.getElud() + "hp" + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText(vastane.toString() + ": " + vastane.getElud() + "hp" + "\n"));
+        Platform.runLater(() -> teadeteLogi.appendText(tudeng.toString() + ": " + tudeng.getElud() + "hp" + "\n"));
     }
 
     /**
@@ -134,8 +136,8 @@ public class Mäng {
      */
     public void kaotus() {
         puhastaEkraan();
-        teadeteLogi.appendText("Surid ära!\n");
-        teadeteLogi.appendText("Lõpetasid: " + tudeng.getPunkte() + " punktiga" + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText("Surid ära!\n"));
+        Platform.runLater(() -> teadeteLogi.appendText("Lõpetasid: " + tudeng.getPunkte() + " punktiga" + "\n"));
     }
 
     /**
@@ -145,8 +147,8 @@ public class Mäng {
     public void voit() {
         puhastaEkraan();
         int vastasePunktid = vastane.getPunkteVaart();
-        teadeteLogi.appendText("Tapsid ära " + vastane.toString() + "\n");
-        teadeteLogi.appendText("Teenisid " + vastasePunktid + " punkti!" + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText("Tapsid ära " + vastane.toString() + "\n"));
+        Platform.runLater(() -> teadeteLogi.appendText("Teenisid " + vastasePunktid + " punkti!" + "\n"));
         tudeng.lisaPunkte(vastasePunktid);
     }
 
@@ -197,7 +199,7 @@ public class Mäng {
 
         // Olukord kui mõlemad kaitsevad
         if (vastaseOtsus == Tegevus.KAITSE && tudengiOtsus == Tegevus.KAITSE) {
-            teadeteLogi.appendText("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist." + "\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist." + "\n"));
         }
 
         // null kui keegi ei surnud

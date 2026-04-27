@@ -1,6 +1,8 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 /**
@@ -24,8 +26,8 @@ public class Baar extends Vastane {
     public void ryndeBoost() {
         super.ryndeBoost();
 
-        teadeteLogi.appendText(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n");
-        teadeteLogi.appendText(this.toString() + " ründab tugevamalt!" + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n"));
+        Platform.runLater(() -> teadeteLogi.appendText(this.toString() + " ründab tugevamalt!" + "\n"));
     }
 
     /**
@@ -68,14 +70,14 @@ public class Baar extends Vastane {
     @Override
     public void kaotaElud(int dmg) {
         if (this.getTegevus()==Tegevus.KAITSE)
-            teadeteLogi.appendText("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu." + "\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu." + "\n"));
         else {
             // Lausete valik listist
             List<String> kaitselaused = this.getKaitselaused();
             int lauseValik = (int) (Math.random() * kaitselaused.size());
 
-            teadeteLogi.appendText(kaitselaused.get(lauseValik) + "\n");
-            teadeteLogi.appendText(this.getNimi() + " kaotas " + dmg + " elu." + "\n");
+            Platform.runLater(() -> teadeteLogi.appendText(kaitselaused.get(lauseValik) + "\n"));
+            Platform.runLater(() -> teadeteLogi.appendText(this.getNimi() + " kaotas " + dmg + " elu." + "\n"));
         }
 
         super.kaotaElud(dmg);

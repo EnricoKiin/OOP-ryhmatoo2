@@ -2,6 +2,8 @@ package ryhmatoo.oopryhmatoo2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 /**
@@ -54,12 +56,12 @@ public class Testryhmatoo {
 
             // Lisa shade, kui mängija ei saa hakkama
             if (!tudeng.onElus()) {
-                teadeteLogi.appendText("Kaotasid mängu. Get good kid\n");
+                Platform.runLater(() ->teadeteLogi.appendText("Kaotasid mängu. Get good kid\n"));
                 break;
             }
         }
         if (tudeng.onElus()) {
-            teadeteLogi.appendText("Lõpetasid mängu " + tudeng.getPunkte() + " punktiga!" + "\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Lõpetasid mängu " + tudeng.getPunkte() + " punktiga!" + "\n"));
         }
     }
 

@@ -1,6 +1,8 @@
 package ryhmatoo.oopryhmatoo2;
 
 import java.util.List;
+
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
 /**
@@ -26,18 +28,18 @@ public class Tudeng extends Tegelane{
     public void saaStippi() {
         int maxElud = this.getMaxElud();
         int hetkelElud = this.getElud();
-        teadeteLogi.appendText("Leidsid maast viieka. Saad edasi juua\n");
+        Platform.runLater(() -> teadeteLogi.appendText("Leidsid maast viieka. Saad edasi juua\n"));
 
         // Elude andmise loogika
         // Esimene haru kui saab max eludeni tagasi ja teine kui ei saa
         int elusidJuurde = (int)(maxElud * 0.3);
         if (hetkelElud + elusidJuurde > maxElud) {
             this.setElud(maxElud);
-            teadeteLogi.appendText("Said kõik elud tagasi\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Said kõik elud tagasi\n"));
         }
         else {
             this.setElud(hetkelElud + elusidJuurde);
-            teadeteLogi.appendText("Said " + elusidJuurde + " hp juurde" + "\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Said " + elusidJuurde + " hp juurde" + "\n"));
         }
     }
 
@@ -64,11 +66,11 @@ public class Tudeng extends Tegelane{
 
         // Lausete suvaline valik ja eraldi haru, kui peategelane otsustas end kaitsta (KAITSE tegevus)
         int valik = (int)(Math.random() * vastaseLaused.size());
-        teadeteLogi.appendText(vastaseLaused.get(valik) + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText(vastaseLaused.get(valik) + "\n"));
         if (this.getTegevus() == Tegevus.KAITSE) {
-            teadeteLogi.appendText("Kuid su lemmik laul hakkas mängima. Kaotad vähem elusid.\n");
+            Platform.runLater(() -> teadeteLogi.appendText("Kuid su lemmik laul hakkas mängima. Kaotad vähem elusid.\n"));
         }
-        teadeteLogi.appendText("Kaotasid "  + dmg + " elu" + "\n");
+        Platform.runLater(() -> teadeteLogi.appendText("Kaotasid "  + dmg + " elu" + "\n"));
 
         super.kaotaElud(dmg);
 

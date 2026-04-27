@@ -47,7 +47,13 @@ public class EnneMangu {
             Voitlus voitlus = new Voitlus();
             voitlus.start(voitlusLava);
 
-            Testryhmatoo.main(voitlus.getLogi(), nimi);
+
+            String nimiLõplik = nimi; // lambda vajab sellist muutujat, mida enam ei muudeta
+            // loome mängu jaoks eraldi threadi
+            Thread manguNiit = new Thread(() -> Testryhmatoo.main(voitlus.getLogi(), nimiLõplik));
+
+            manguNiit.setDaemon(true); // kui rakendus sulgub, sulgub ka niit
+            manguNiit.start();
         });
 
         sisu.getChildren().addAll(nimiSilt, nimiVäli, alustaNupp);
