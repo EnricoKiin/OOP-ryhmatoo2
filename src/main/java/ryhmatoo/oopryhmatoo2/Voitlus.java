@@ -44,6 +44,7 @@ public class Voitlus  implements StseeniLooja{
 
     private Button looNupp(String tekst) {
 
+        // AI abil tehtud stiilid
         String tavaline = "-fx-background-color: #FF8C00; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
         String hover   = "-fx-background-color: #FFA500; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
 
