@@ -1,5 +1,6 @@
 package ryhmatoo.oopryhmatoo2;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javafx.application.Platform;
@@ -11,13 +12,44 @@ import javafx.scene.control.TextArea;
  */
 public class Mäng {
     private Tudeng tudeng;
+    private ArrayList<Vastane> vastased;
     private Vastane vastane;
     private TextArea teadeteLogi;
+    private Tegevus tudengiOtsus;
+
+    public void setTudengiOtsus(Tegevus tudengiOtsus) {
+        this.tudengiOtsus = tudengiOtsus;
+    }
 
     public Mäng(Tudeng tudeng, Vastane vastane, TextArea logi) {
         this.tudeng = tudeng;
         this.vastane = vastane;
         this.teadeteLogi = logi;
+    }
+
+    public void setVastane(Vastane vastane) {
+        this.vastane = vastane;
+    }
+
+    public Vastane getVastane() {
+        return vastane;
+    }
+
+    public Mäng(String tudengiNimi) {
+        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5);
+        this.vastased = new ArrayList<>();
+        looVastased();
+
+        this.vastane = vastased.getFirst();
+    }
+
+    private void looVastased() {
+        Baar baar1 = looBaar("Atso", 1);
+        Baar baar2 = looBaar("Seik", 2);
+        Baar baar3 = looBaar("Möku", 3);
+        vastased.add(baar1);
+        vastased.add(baar2);
+        vastased.add(baar3);
     }
 
     /**
@@ -50,6 +82,22 @@ public class Mäng {
         catch (InterruptedException ignored) {}
     }
 
+    public void otsustaVastaseTegevus() {
+        // Vaste tegevuse välja loosimine
+        // Tahame ründamist rohkem, et mängija ei saaks end liiga mugavalt tunda
+        // Hetkel 60% Ründa, 30% kaitse, 10 boost
+        int vastaneTegevus = (int) (Math.random() * 100);
+
+        if (vastaneTegevus <= 59) {
+            vastane.setTegevus(Tegevus.RYNDA);
+        } else if (vastaneTegevus <= 89) {
+            vastane.setTegevus(Tegevus.KAITSE);
+        } else {
+            vastane.setTegevus(Tegevus.BOOST);
+        }
+    }
+
+
     /**
      * Peameetod, mis tegeleb kogu mängu loogikaga
      * Peamine flow on:
@@ -60,7 +108,6 @@ public class Mäng {
      * 5. Kui tudeng sureb, siis kaotus(). Kui võidab siis voit()
      */
     public void mängi() {
-        Scanner sc = new Scanner(System.in);
         int TudengiOtsus;
         int vastaneTegevus;
 
@@ -70,46 +117,15 @@ public class Mäng {
             puhastaEkraan();
             mänguSeis();
 
-            // Vaste tegevuse välja loosimine
-            // Tahame ründamist rohkem, et mängija ei saaks end liiga mugavalt tunda
-            // Hetkel 60% Ründa, 30% kaitse, 10 boost
-            vastaneTegevus = (int) (Math.random() * 100);
-
-            if (vastaneTegevus <= 59) {
-                vastane.setTegevus(Tegevus.RYNDA);
-            } else if (vastaneTegevus <= 89) {
-                vastane.setTegevus(Tegevus.KAITSE);
-            } else {
-                vastane.setTegevus(Tegevus.BOOST);
-            }
-
-            // Tudengi tegevuse määramine
-            // Tegeleb erinditega ja ei lase valet väärtust sisestada
-            while (true) {
-                System.out.println("Vali tegevus:");
-                System.out.println("1 - ründa    2 - kaitse    3 - saa stippi");
-                if (sc.hasNextInt()) {
-                    TudengiOtsus = sc.nextInt();
-                    if (TudengiOtsus >=1 && TudengiOtsus <= 3) {
-                        break;
-                    } else {
-                        System.out.println("Vale sisend!");
-                    }
-                } else {
-                    System.out.println("Vale sisend!");
-                    sc.next();
-                }
-            }
-
             // Määrab vastavalt otsusele tegevuse
-            switch (TudengiOtsus) {
-                case 1:
+            switch (tudengiOtsus) {
+                case Tegevus.RYNDA:
                     tudeng.setTegevus(Tegevus.RYNDA);
                     break;
-                case 2:
+                case Tegevus.KAITSE:
                     tudeng.setTegevus(Tegevus.KAITSE);
                     break;
-                case 3:
+                case Tegevus.RAVI:
                     tudeng.setTegevus(Tegevus.RAVI);
                     break;
             }
@@ -208,5 +224,63 @@ public class Mäng {
 
     }
 
+
+    /**
+     * Abifunktsioon, millega loome Baar vastased. Saab valida raskustaseme
+     * @param nimi -- Baari nimi
+     * @param raskusTase -- Raskustase. 1 kuni 3 ehk Easy, Medium, Hard
+     * @return Tagastab Baari isendi
+     */
+    public static Baar looBaar(String nimi, int raskusTase) {
+        /*
+        Easy:
+            Elud: 12-17
+            KaitseProtsent: 0.1-0.3
+            RyndaDmg: 3-5
+
+        Medium:
+            Elud: 15-23
+            KaitseProtsent: 0.3-0.5
+            RyndaDmg: 4-6
+
+         Hard:
+            Elud: 18-27
+            KaitseProtsent: 0.4-0.6
+            RyndaDmg: 5-7
+         */
+
+
+        int elud=0;
+        double kaitseProtsent=0.0;
+        int rynda_dmg=0;
+
+        switch (raskusTase) {
+
+            // Easy
+            case 1:
+                elud = (int)(Math.random() * 6) + 12;
+                kaitseProtsent = Math.random() * 0.2 + 0.1;
+                rynda_dmg = (int)(Math.random() * 2) + 3;
+                break;
+
+            // Medium
+            case 2:
+                elud = (int) (Math.random() * 8) + 15;
+                kaitseProtsent = Math.random() * 0.2 + 0.3;
+                rynda_dmg = (int) (Math.random() * 2) + 4;
+                break;
+
+            // Hard
+            case 3:
+                elud = (int) (Math.random() * 9) + 18;
+                kaitseProtsent = Math.random() * 0.2 + 0.4;
+                rynda_dmg = (int) (Math.random() * 2) + 5;
+                break;
+
+        }
+
+        Baar bar = new Baar(nimi, elud, kaitseProtsent, rynda_dmg);
+        return bar;
+    }
 
 }

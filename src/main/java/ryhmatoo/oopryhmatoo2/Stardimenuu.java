@@ -16,14 +16,14 @@ import javafx.stage.Stage;
 
 import java.util.Stack;
 
-public class Stardimenuu extends Application {
+public class Stardimenuu implements StseeniLooja{
+    private SeanssiHaldur vahetaja;
 
-    public static void main(String[] args) {
-        launch(args);
+    public Stardimenuu(SeanssiHaldur vahetaja) {
+        this.vahetaja = vahetaja;
     }
 
-    @Override
-    public void start(Stage lava) {
+    public Scene looStseen() throws StseeniErind {
         Pane juur = new Pane();
 
         // Tausta loomine
@@ -63,6 +63,7 @@ public class Stardimenuu extends Application {
         menüü.layoutYProperty().bind(juur.heightProperty().multiply(0.04));
 
         //Vbox asukoht
+        // AI abi kasutatud, et leida viis, kuidas Pane sees suurust muuta
         nupud.layoutXProperty().bind(
                 menüü.widthProperty()
                         .subtract(nupud.widthProperty())
@@ -86,7 +87,7 @@ public class Stardimenuu extends Application {
         stiiliNupp(edetabel, nupud);
 
         // avaneb vaheekraan, andmete sisestamiseks
-        mangiNupp.setOnAction(e -> EnneMangu.ava());
+        mangiNupp.setOnAction(e -> vahetaja.vahetaStseen("NIMI"));
 
 
 
@@ -126,9 +127,7 @@ public class Stardimenuu extends Application {
         //kusKuratOnSeeKast(nupud, menüü);
 
         Scene stseen = new Scene(juur, 1200, 720);
-        lava.setTitle("Stardi menüü");
-        lava.setScene(stseen);
-        lava.show();
+        return stseen;
     }
 
     //Ainult nuppude ja menüü debuggimiseks, sest need vihkasid mind

@@ -15,10 +15,9 @@ public class Tudeng extends Tegelane{
     private TextArea teadeteLogi;
 
 
-    public Tudeng(String nimi, int elud, double kaitseProtsent, int rynda_dmg, TextArea logi) {
+    public Tudeng(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);
         this.punkte = 0;
-        this.teadeteLogi = logi;
     }
 
     /**

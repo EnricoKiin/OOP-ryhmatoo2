@@ -12,11 +12,10 @@ public class Baar extends Vastane {
 
     private TextArea teadeteLogi;
 
-    public Baar(String nimi, int elud, double kaitseProtsent, int rynda_dmg, TextArea logi) {
+    public Baar(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);
         lisaRyndelaused();
         lisaKaitselaused();
-        this.teadeteLogi = logi;
     }
 
     /**

@@ -8,16 +8,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class Voitlus extends Application {
+public class Voitlus  implements StseeniLooja{
 
-    public static void main(String[] args) {
-        launch(args);
+    private SeanssiHaldur vahetaja;
+    private Mäng loogika;
+    private ImageView vastasePilt;
+
+    public Voitlus(SeanssiHaldur vahetaja, Mäng loogika) {
+        this.vahetaja = vahetaja;
+        this.loogika = loogika;
+        this.vastasePilt = looVastane(loogika.getVastane());
+    }
+
+    private ImageView looVastane(Vastane vastane) {
+        return new ImageView(new Image(vastane.getNimi() + ".png"));
     }
 
 
@@ -43,25 +51,36 @@ public class Voitlus extends Application {
     }
 
 
-    @Override
-    public void start(Stage peaLava) {
 
-        BorderPane suur = new BorderPane();
+    public Scene looStseen() {
+
+        BorderPane juur = new BorderPane();
+
+        // Ekraani jaotus
+        StackPane ulemineAla = new StackPane();
+        HBox alumineAla = new HBox();
+        juur.setCenter(ulemineAla);
+        juur.setBottom(alumineAla);
+
+        // 70% Kõrgusest ülemise alale ja 30% alumisele
+        alumineAla.prefHeightProperty().bind(juur.heightProperty().multiply(0.3));
+
 
         // tudengi pilt
-        Image pilt = new Image("kriips.png");
-        ImageView pildiVaade = new ImageView(pilt);
+        ImageView tegelane = new ImageView(new Image("tegelane.png"));
 
-        // Määrame pildi laiuse
-        pildiVaade.setFitWidth(80);
-        pildiVaade.setPreserveRatio(true); // Säilitab pildi proportsioonid
+        StackPane tegelaseKoht = looKaraketeriAla(tegelane, ulemineAla);
+        StackPane.setAlignment(tegelaseKoht, Pos.BOTTOM_RIGHT);
 
-        StackPane pildiKonteiner = new StackPane(pildiVaade);
-        StackPane.setAlignment(pildiVaade, Pos.BOTTOM_RIGHT);
-        pildiKonteiner.setPadding(new Insets(0, 300, 20, 0));
+        ulemineAla.setBorder(new Border(new BorderStroke(
+                Color.BLUE,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2))));
 
-        // paigutame konteineri paremale
-        suur.setRight(pildiKonteiner);
+        // Vastase loomine
+        StackPane vastaseKoht = looKaraketeriAla(vastasePilt, ulemineAla);
+        StackPane.setAlignment(vastaseKoht, Pos.TOP_LEFT);
 
 
         // 3 nuppu
@@ -69,27 +88,78 @@ public class Voitlus extends Application {
         Button kaitseNupp = looNupp("KAITSE");
         Button raviNupp   = looNupp("RAVI");
 
-        HBox nupud = new HBox(60, rundaNupp, kaitseNupp, raviNupp);
-        nupud.setAlignment(Pos.CENTER_LEFT); // vasakule
-        nupud.setPadding(new Insets(10, 0, 10, 220));
 
+        rundaNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RYNDA));
+        kaitseNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.KAITSE));
+        raviNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RAVI));
+
+
+        VBox nupud = new VBox(10, rundaNupp, kaitseNupp, raviNupp);
+        nupud.setAlignment(Pos.CENTER); // keskele
+
+        nupud.setBorder(new Border(new BorderStroke(
+                Color.RED,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2)
+        )));
 
         // teksti "konsool"
         logi.setEditable(false); // mängija ei saa sinna ise kirjutada
         logi.setWrapText(true); // tekst läheb järgmisele reale, kui aken saab läbi
 
+        alumineAla.getChildren().addAll(logi, nupud);
+        logi.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.7));
+        nupud.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.3));
 
-        VBox alumineAla = new VBox(nupud, logi);
-        suur.setBottom(alumineAla);
+        Scene stseen = new Scene(juur, 1200, 720);
+        return stseen;
+
+    }
+
+    private static StackPane looKaraketeriAla(ImageView tegelane, StackPane ulemineAla) {
+        //Aluse pilt
+        ImageView alus = new ImageView(new Image("Seisukoht.png"));
 
 
-        Scene stseen1 = new Scene(suur, 1200, 720);
+        //Kombineerime
+        StackPane tegelaseKoht = new StackPane(alus, tegelane);
+        ulemineAla.getChildren().add(tegelaseKoht);
 
-        peaLava.setTitle("Võitlus");
+        //Suuruse fikseerimine
+        tegelaseKoht.prefWidthProperty().bind(ulemineAla.widthProperty().multiply(0.3));
+        tegelaseKoht.prefHeightProperty().bind(ulemineAla.heightProperty().multiply(0.45));
+        tegelaseKoht.maxWidthProperty().bind(tegelaseKoht.prefWidthProperty());
+        tegelaseKoht.maxHeightProperty().bind(tegelaseKoht.prefHeightProperty());
 
-        peaLava.setScene(stseen1);
+        //Piirame objektide suuruseid
+        alus.fitWidthProperty().bind(tegelaseKoht.prefWidthProperty());
+        alus.fitHeightProperty().bind(tegelaseKoht.prefHeightProperty().multiply(0.2));
 
-        peaLava.show();
+        //Paneme tegelased paika
+        StackPane.setAlignment(alus, Pos.BOTTOM_CENTER);
+        StackPane.setAlignment(tegelaseKoht, Pos.CENTER);
 
+        tegelaseKoht.setBorder(new Border(new BorderStroke(
+                Color.GREEN,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2))));
+
+
+        // Määrame pildi laiuse
+        tegelane.fitWidthProperty().bind(tegelaseKoht.prefWidthProperty().multiply(0.3));
+        tegelane.setPreserveRatio(true); // Säilitab pildi proportsioonid
+
+        return tegelaseKoht;
+    }
+
+    private void teeTegevus(Tegevus tudengiTegevus) {
+
+        // Iga kord otsustame suvaliselt vastase tegevuse ja määrame tudengi oma
+        loogika.otsustaVastaseTegevus();
+        loogika.setTudengiOtsus(tudengiTegevus);
+
+        loogika.lahing();
     }
 }

@@ -8,12 +8,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class EnneMangu {
+public class EnneMangu implements StseeniLooja{
 
-    public static void ava() {
-        Stage lava = new Stage();
-        lava.setTitle("Mängu seaded");
-        lava.initModality(Modality.APPLICATION_MODAL); // stardimenüüs ei saa nuppe vajutada, kuni vaheaken on lahti
+    private SeanssiHaldur vahetaja;
+
+    public EnneMangu(SeanssiHaldur vahetaja) {
+        this.vahetaja = vahetaja;
+    }
+
+
+    public Scene looStseen() {
 
         VBox sisu = new VBox(20);
         sisu.setAlignment(Pos.CENTER);
@@ -29,8 +33,7 @@ public class EnneMangu {
         // alustamise nupp
         Button alustaNupp = new Button("Alusta");
 
-        alustaNupp.setOnAction(e -> {
-
+        alustaNupp.setOnMouseClicked(e -> {
             String nimi;
             if (nimiVäli.getText().isEmpty()) {
                 nimi = "Piro Kunn";
@@ -38,28 +41,18 @@ public class EnneMangu {
             else {
                 nimi = nimiVäli.getText();
             }
+            Mäng loogika = new Mäng(nimi);
 
+            Voitlus voitlus = new Voitlus(vahetaja, loogika);
+            vahetaja.lisaStseen("VOITLUS", voitlus.looStseen());
+            vahetaja.vahetaStseen("VOITLUS");
 
-            lava.close();
-
-            // saadame nime edasi ja alustame võitlust
-            Stage voitlusLava = new Stage();
-            Voitlus voitlus = new Voitlus();
-            voitlus.start(voitlusLava);
-
-
-            String nimiLõplik = nimi; // lambda vajab sellist muutujat, mida enam ei muudeta
-            // loome mängu jaoks eraldi threadi
-            Thread manguNiit = new Thread(() -> Testryhmatoo.main(voitlus.getLogi(), nimiLõplik));
-
-            manguNiit.setDaemon(true); // kui rakendus sulgub, sulgub ka niit
-            manguNiit.start();
         });
 
         sisu.getChildren().addAll(nimiSilt, nimiVäli, alustaNupp);
 
-        Scene stseen = new Scene(sisu, 400, 350);
-        lava.setScene(stseen);
-        lava.show();
+        Scene stseen = new Scene(sisu, 1200, 720);
+        return stseen;
+
     }
 }
