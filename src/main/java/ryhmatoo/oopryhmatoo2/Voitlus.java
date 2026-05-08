@@ -284,6 +284,10 @@ public class Voitlus  implements StseeniLooja{
 
     private void voitKoik() {
 
+        // kaotuse stseenile viskamine
+        Voit voitis = new Voit(vahetaja, loogika.getTudeng().getPunkte());
+        vahetaja.lisaStseen("VOIT",voitis.looStseen());
+        vahetaja.vahetaStseen("VOIT");
     }
 
     /**

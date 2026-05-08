@@ -40,7 +40,7 @@ public class Mäng {
     }
 
     public Mäng(String tudengiNimi) {
-        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5);
+        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 30); // 5
         this.vastased = new ArrayList<>();
         looVastased();
 

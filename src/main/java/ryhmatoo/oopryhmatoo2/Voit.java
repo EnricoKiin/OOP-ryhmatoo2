@@ -21,6 +21,7 @@ public class Voit implements StseeniLooja {
 
     public Scene looStseen() {
 
+        StackPane root = new StackPane();
         BorderPane sisu = new BorderPane();
 
         // taustapilt
@@ -75,51 +76,64 @@ public class Voit implements StseeniLooja {
 
         // naljakad pildid
         ImageView vasakPilt = new ImageView(new Image("kort.jpg"));
-        vasakPilt.setFitWidth(200);
+        vasakPilt.setFitWidth(400);
         vasakPilt.setPreserveRatio(true);
 
         ImageView paremPilt = new ImageView(new Image("kevin.jpg"));
         paremPilt.setFitWidth(200);
         paremPilt.setPreserveRatio(true);
 
-        sisu.setLeft(vasakPilt);
-        sisu.setRight(paremPilt);
+        // konteinerite süsteem AI abiga tehtud
+        // vasaku pildi konteiner
+        StackPane vasakBox = new StackPane(vasakPilt);
+        vasakBox.setAlignment(Pos.CENTER);
+        vasakBox.setTranslateY(220);
+
+        // parema pildi konteiner
+        StackPane paremBox = new StackPane(paremPilt);
+        paremBox.setAlignment(Pos.CENTER);
+        paremBox.setTranslateY(60);
+
+        sisu.setLeft(vasakBox);
+        sisu.setRight(paremBox);
+
+
 
         // AI abil padding paika pandud
         sisu.setStyle("-fx-padding: 30 50 30 50;");
 
 
-        // congrats tekst
+        // congrats tekst, stiil AI poolt
         Label congrats = new Label("CONGRATS");
         congrats.setStyle("""
-            -fx-font-size: 80px;
+            -fx-font-size: 110px;
             -fx-font-weight: bold;
             -fx-text-fill: white;
+            -fx-effect: dropshadow(gaussian, black, 12, 0.8, 0, 0);
             """);
 
 
         // punktide kuvamine
-        Label punkteLabel = new Label(punktid + "punkti");
+        Label punkteLabel = new Label(punktid + " punkti");
 
+        // stiil AI poolt
         punkteLabel.setStyle("""
-                -fx-font-size: 30px;
+                -fx-font-size: 60px;
+                -fx-font-weight: bold;
                 -fx-text-fill: white;
+                -fx-effect: dropshadow(gaussian, black, 12, 0.8, 0, 0);
             """);
 
 
         // AI abil Pane-ide ja Boxide loomine ning paigutamine
-        StackPane center = new StackPane();
-
         VBox box = new VBox(10, congrats, punkteLabel);
         box.setAlignment(Pos.CENTER);
 
-        congrats.setTranslateY(-60);
+        box.setTranslateY(-80);
 
-        center.getChildren().add(box);
-        sisu.setCenter(center);
+        root.getChildren().addAll(sisu, box);
 
-
-        return new Scene(sisu, 1200, 720, Color.WHITESMOKE);
+        return new Scene(root, 1200, 720, Color.WHITESMOKE);
 
     }
 
