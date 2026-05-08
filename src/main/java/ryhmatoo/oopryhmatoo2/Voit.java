@@ -76,7 +76,7 @@ public class Voit implements StseeniLooja {
 
         // naljakad pildid
         ImageView vasakPilt = new ImageView(new Image("kort.jpg"));
-        vasakPilt.setFitWidth(400);
+        vasakPilt.setFitWidth(350);
         vasakPilt.setPreserveRatio(true);
 
         ImageView paremPilt = new ImageView(new Image("kevin.jpg"));
@@ -125,8 +125,24 @@ public class Voit implements StseeniLooja {
             """);
 
 
+        // salvestamise nupp
+        Button salvestaNupp = new Button("SALVESTA");
+
+        // stiil AI abil
+        salvestaNupp.setStyle("""
+                -fx-background-color: darkred;
+                -fx-text-fill: lightgray;
+                -fx-font-size: 24px;
+                -fx-font-weight: bold;
+                -fx-padding: 10 20 10 20;
+            """);
+
+        salvestaNupp.setTranslateY(20);
+
+
+
         // AI abil Pane-ide ja Boxide loomine ning paigutamine
-        VBox box = new VBox(10, congrats, punkteLabel);
+        VBox box = new VBox(20, congrats, punkteLabel, salvestaNupp);
         box.setAlignment(Pos.CENTER);
 
         box.setTranslateY(-120);
