@@ -129,7 +129,7 @@ public class Voit implements StseeniLooja {
         VBox box = new VBox(10, congrats, punkteLabel);
         box.setAlignment(Pos.CENTER);
 
-        box.setTranslateY(-80);
+        box.setTranslateY(-120);
 
         root.getChildren().addAll(sisu, box);
 
