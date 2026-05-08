@@ -15,17 +15,23 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Voitlus  implements StseeniLooja{
 
     private SeanssiHaldur vahetaja;
     private Mäng loogika;
     private ImageView vastasePilt;
     private TextArea logi = new TextArea();
+    private ArrayList<Button> nupud;
+    private boolean tegevusKaib;
 
     public Voitlus(SeanssiHaldur vahetaja, Mäng loogika) {
         this.vahetaja = vahetaja;
         this.loogika = loogika;
         this.vastasePilt = looVastane(loogika.getVastane());
+        nupud = new ArrayList<>(3);
+        tegevusKaib = false;
     }
 
     private ImageView looVastane(Vastane vastane) {
@@ -80,14 +86,16 @@ public class Voitlus  implements StseeniLooja{
                 new BorderWidths(2))));
 
         // Vastase loomine
-        StackPane vastaseKoht = looKaraketeriAla(vastasePilt, ulemineAla);
-        StackPane.setAlignment(vastaseKoht, Pos.TOP_LEFT);
+        paneVastanePaika(ulemineAla);
 
 
         // 3 nuppu
         Button rundaNupp  = looNupp("RÜNDA");
         Button kaitseNupp = looNupp("KAITSE");
         Button raviNupp   = looNupp("RAVI");
+        nupud.add(rundaNupp);
+        nupud.add(kaitseNupp);
+        nupud.add(raviNupp);
 
 
         rundaNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RYNDA));
@@ -119,6 +127,11 @@ public class Voitlus  implements StseeniLooja{
         Scene stseen = new Scene(juur, 1200, 720);
         return stseen;
 
+    }
+
+    private void paneVastanePaika(StackPane ulemineAla) {
+        StackPane vastaseKoht = looKaraketeriAla(vastasePilt, ulemineAla);
+        StackPane.setAlignment(vastaseKoht, Pos.TOP_LEFT);
     }
 
     private static StackPane looKaraketeriAla(ImageView tegelane, StackPane ulemineAla) {
@@ -159,7 +172,11 @@ public class Voitlus  implements StseeniLooja{
     }
 
     private void teeTegevus(Tegevus tudengiTegevus) {
+        if (tegevusKaib) {
+            muudaNuppudeOlek(false);
 
+        }
+        tegevusKaib = true;
         puhastaLogi();
 
         // Iga kord otsustame suvaliselt vastase tegevuse ja määrame tudengi oma
@@ -169,11 +186,31 @@ public class Voitlus  implements StseeniLooja{
         LahinguTulemus tulemus = loogika.lahing();
 
         kajastaLahinguTulemus(tulemus);
+
         PauseTransition maga = new PauseTransition(new Duration(5000));
 
+        maga.setOnFinished(e -> {
+            if (tulemus.getSurnud() == null) valjastaTegelasteInfo();
+            else voiduKontroll(tulemus);
+            tegevusKaib = false;
+            muudaNuppudeOlek(true);
+        });
+        maga.play();
+    }
+
+    private void voiduKontroll(LahinguTulemus tulemus) {
+        if (tulemus.getSurnud().equals(tulemus.getVastane())) {
+            // Kas on viimane vastane
+            if (loogika.getVastased().size() == loogika.getMitmesVastane()) voitKoik();
+            else voitUksik(tulemus);
+        }
+        else if (tulemus.getSurnud().equals(tulemus.getTudeng())) {
+            kaotus(tulemus);
+        }
+
+        PauseTransition maga = new PauseTransition(new Duration(5000));
         maga.setOnFinished(e -> valjastaTegelasteInfo());
         maga.play();
-
     }
 
     /**
@@ -202,21 +239,9 @@ public class Voitlus  implements StseeniLooja{
         info.append(tulemus.getVastaseLause());
 
         logi.appendText(info.toString());
+    }
 
-        PauseTransition maga = new PauseTransition(new Duration(5000));
-
-        maga.setOnFinished(e -> {
-            if (tulemus.getSurnud() == null) return;
-
-            if (tulemus.getSurnud().equals(tulemus.getVastane())) {
-                voit(tulemus);
-            }
-            else if (tulemus.getSurnud().equals(tulemus.getTudeng())) {
-                kaotus(tulemus);
-            }
-        });
-
-        maga.play();
+    private void voitKoik() {
 
     }
 
@@ -235,10 +260,10 @@ public class Voitlus  implements StseeniLooja{
     }
 
     /**
-     * Meetod, mis aktiveerub, kui tudeng tappis vastase.
+     * Meetod, mis aktiveerub, kui tudeng tappis vastase ning vastane polnud viimane.
      * Ütleb palju punkte tudeng sai ja kasutab vastavaid meetode, et neid lisada
      */
-    private void voit(LahinguTulemus tulemus) {
+    private void voitUksik(LahinguTulemus tulemus) {
         puhastaLogi();
         StringBuilder info = new StringBuilder(100);
 
@@ -249,12 +274,32 @@ public class Voitlus  implements StseeniLooja{
 
         logi.appendText(info.toString());
 
+        // Vahetame vastase
+        vahetaVastane();
+
+    }
+
+    private void vahetaVastane() {
+        loogika.vahetaVastane();
+        vastasePilt.setImage(new Image(loogika.getVastane().getNimi() + ".png"));
     }
 
     /**
      * Puhastab teksti ala. Peab appendima, muidu läheb läbi ainult viimane tekst setText puhul
      */
     private void puhastaLogi() {
-        logi.appendText("\n".repeat(15));
+        //logi.appendText("\n".repeat(15));
+        logi.clear();
+    }
+
+    /**
+     * Muudab nuppude vajutamise võimalikkust
+     * @param olek -- mis olekus sa tahad et nupud oleksid. Töötab intuitiivselt.
+     */
+    private void muudaNuppudeOlek(boolean olek) {
+        for (Button button : nupud) {
+            button.setDisable(!olek);
+        }
+
     }
 }

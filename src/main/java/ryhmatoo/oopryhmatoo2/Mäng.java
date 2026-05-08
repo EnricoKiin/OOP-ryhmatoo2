@@ -16,6 +16,7 @@ public class Mäng {
     private Vastane vastane;
     private TextArea teadeteLogi;
     private Tegevus tudengiOtsus;
+    private int mitmesVastane;
 
     public void setTudengiOtsus(Tegevus tudengiOtsus) {
         this.tudengiOtsus = tudengiOtsus;
@@ -30,12 +31,21 @@ public class Mäng {
         return vastane;
     }
 
+    public int getMitmesVastane() {
+        return mitmesVastane;
+    }
+
+    public ArrayList<Vastane> getVastased() {
+        return vastased;
+    }
+
     public Mäng(String tudengiNimi) {
         this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5);
         this.vastased = new ArrayList<>();
         looVastased();
 
         this.vastane = vastased.getFirst();
+        this.mitmesVastane = 1;
     }
 
     private void looVastased() {
@@ -156,7 +166,6 @@ public class Mäng {
             if (tudengiOtsus == Tegevus.KAITSE) {
                 vastaseATK -= (int)(vastaseATK * tudeng.getKaitseProtsent());
             }
-            System.out.println();
             tudeng.kaotaElud(vastaseATK, vastane, info);
 
             // Kui tudeng suri ära, siis pole vaja rohkem kontrollida
@@ -241,4 +250,13 @@ public class Mäng {
         return bar;
     }
 
+    /**
+     * Vahetab vastase järgmise peale, kui veel polnud lõplik võit
+     */
+    public void vahetaVastane() {
+        mitmesVastane++;
+
+        // -1, sest mitmes algas 1st
+        vastane = vastased.get(mitmesVastane -1);
+    }
 }
