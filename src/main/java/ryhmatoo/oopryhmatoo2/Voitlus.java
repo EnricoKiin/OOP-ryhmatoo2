@@ -262,6 +262,7 @@ public class Voitlus  implements StseeniLooja{
 
         logi.appendText(info.toString());
 
+        // kaotuse stseenile viskamine
         Kaotus kaotas = new Kaotus(vahetaja);
         vahetaja.lisaStseen("KAOTUS",kaotas.looStseen());
         vahetaja.vahetaStseen("KAOTUS");

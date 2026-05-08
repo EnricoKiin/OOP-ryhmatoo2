@@ -40,7 +40,6 @@ public class Testryhmatoo extends Application {
 
         /*
 
-
         // Loopime kõik vastased läbi, kuni keegi sureb.
         for (Vastane vastane : vastased) {
             Mäng mäng = new Mäng(tudeng, vastane, teadeteLogi);

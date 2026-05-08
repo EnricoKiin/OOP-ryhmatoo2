@@ -64,6 +64,7 @@ public class EnneMangu implements StseeniLooja{
                 // nime kontroll
                 String nimi;
 
+                // nime vaikeväärtuseks on "Piro Kunn"
                 if (nimiVäli.getText().isEmpty()) {
                     nimi = "Piro Kunn";
                 } else {
