@@ -232,6 +232,10 @@ public class Voitlus  implements StseeniLooja{
         info.append("Lõpetasid: " + tulemus.getTudeng().getPunkte() + " punktiga" + "\n");
 
         logi.appendText(info.toString());
+
+        Kaotus kaotas = new Kaotus(vahetaja);
+        vahetaja.lisaStseen("KAOTUS",kaotas.looStseen());
+        vahetaja.vahetaStseen("KAOTUS");
     }
 
     /**
