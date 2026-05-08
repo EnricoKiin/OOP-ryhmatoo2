@@ -28,12 +28,14 @@ public class Testryhmatoo extends Application {
         SeanssiHaldur vahetaja = new SeanssiHaldur(lava);
 
         // Ekraanide loome
-        Stardimenuu algus = new Stardimenuu(vahetaja);
+        Edetabel edetabel = new Edetabel(vahetaja);
+        Stardimenuu algus = new Stardimenuu(vahetaja, edetabel);
         EnneMangu nimeValik = new EnneMangu(vahetaja);
 
 
         vahetaja.lisaStseen("START",algus.looStseen());
         vahetaja.lisaStseen("NIMI", nimeValik.looStseen());
+        vahetaja.lisaStseen("EDETABEL", edetabel.looStseen());
 
         vahetaja.vahetaStseen("START");
     }

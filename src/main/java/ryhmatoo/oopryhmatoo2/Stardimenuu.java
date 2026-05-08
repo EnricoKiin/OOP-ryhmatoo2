@@ -18,9 +18,11 @@ import java.util.Stack;
 
 public class Stardimenuu implements StseeniLooja{
     private SeanssiHaldur vahetaja;
+    private Edetabel edetabel;
 
-    public Stardimenuu(SeanssiHaldur vahetaja) {
+    public Stardimenuu(SeanssiHaldur vahetaja, Edetabel edetabel) {
         this.vahetaja = vahetaja;
+        this.edetabel = edetabel;
     }
 
     /**
@@ -32,14 +34,12 @@ public class Stardimenuu implements StseeniLooja{
         Pane juur = new Pane();
 
         // Tausta loomine
-        Image img = new Image("Stardiekraan.png");
-        BackgroundImage bg = new BackgroundImage(img,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(100, 100,true, true, true, true));
+        ImageView taust = new ImageView(new Image("Stardiekraan.png"));
 
-        juur.setBackground(new Background(bg));
+        taust.fitWidthProperty().bind(juur.widthProperty());
+        taust.fitHeightProperty().bind(juur.heightProperty());
+
+        juur.getChildren().add(0, taust);
 
         // Kõik nupud on omakord VBox-s
         Pane menüü = new Pane();
@@ -93,6 +93,11 @@ public class Stardimenuu implements StseeniLooja{
 
         // avaneb vaheekraan, andmete sisestamiseks
         mangiNupp.setOnAction(e -> vahetaja.vahetaStseen("NIMI"));
+        edetabel.setOnMouseClicked(e -> {
+
+            this.edetabel.uuendaTabelit();
+            vahetaja.vahetaStseen("EDETABEL");
+        });
 
 
 

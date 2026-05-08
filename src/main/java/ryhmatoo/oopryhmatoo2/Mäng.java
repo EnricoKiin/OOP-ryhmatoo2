@@ -42,7 +42,7 @@ public class Mäng {
      * @param tudengiNimi -- Tudengi nimi
      */
     public Mäng(String tudengiNimi) {
-        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 30); // 5
+        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5); // 5
         this.vastased = new ArrayList<>();
         looVastased();
 
@@ -216,5 +216,16 @@ public class Mäng {
 
         // -1, sest mitmes algas 1st
         vastane = vastased.get(mitmesVastane -1);
+    }
+
+
+    /**
+     * Lisab mängijale vastase punkte
+     * @return Tagastab punktide arvu GUI jaoks
+     */
+    public int voit() {
+        int vastasePunktid = vastane.getPunkteVaart();
+        tudeng.lisaPunkte(vastasePunktid);
+        return vastasePunktid;
     }
 }

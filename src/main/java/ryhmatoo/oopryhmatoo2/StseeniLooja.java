@@ -2,6 +2,8 @@ package ryhmatoo.oopryhmatoo2;
 
 import javafx.scene.Scene;
 
+import java.io.IOException;
+
 public interface StseeniLooja {
 
     /**

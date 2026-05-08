@@ -1,5 +1,6 @@
 package ryhmatoo.oopryhmatoo2;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,15 +9,24 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Voit implements StseeniLooja {
 
     private SeanssiHaldur vahetaja;
-    int punktid;
+    private int punktid;
+    private String nimi;
 
-    public Voit(SeanssiHaldur vahetaja, int punktid) {
+    public Voit(SeanssiHaldur vahetaja, int punktid, String nimi) {
         this.vahetaja=vahetaja;
         this.punktid=punktid;
+        this.nimi = nimi;
     }
 
     public Scene looStseen() {
@@ -139,6 +149,16 @@ public class Voit implements StseeniLooja {
 
         salvestaNupp.setTranslateY(20);
 
+        salvestaNupp.setOnMouseClicked(e -> {
+            try {
+                salvestaTulemus();
+                popup(true);
+            }
+            catch (IOException io) {
+                popup(false);
+            }
+        });
+
 
 
         // AI abil Pane-ide ja Boxide loomine ning paigutamine
@@ -151,6 +171,93 @@ public class Voit implements StseeniLooja {
 
         return new Scene(root, 1200, 720, Color.WHITESMOKE);
 
+    }
+
+    /**
+     * Annnab salvestamise tulemuste kohta teada, kas õnnestus popup kujul
+     * @param edukas -- true kui edukas, false kui polnud
+     */
+    private void popup(boolean edukas) {
+        Stage lava = new Stage();
+        StackPane juur = new StackPane();
+
+        //Info teksti loomine
+        Text info = new Text();
+        juur.getChildren().add(info);
+        StackPane.setAlignment(info, Pos.CENTER);
+
+        // Edukuse järgi muutmine
+        if (edukas) {
+            info.setText("Salvestus lõppes edukalt");
+            juur.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+        else {
+            info.setText("Salvestus ebaõnnestus");
+            juur.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+
+        info.setFont(Font.font(20));
+        info.setFill(Color.BLACK);
+
+        Scene stseen = new Scene(juur, 300, 200);
+        lava.setTitle("Salvestumine");
+        lava.setScene(stseen);
+        lava.show();
+    }
+
+    /**
+     * Salvestab mängu tulemused faili edetabel.dat
+     * @throws IOException -- Vaja et töötaks
+     */
+    private void salvestaTulemus() throws IOException {
+        Map<String, Integer> tulemused = new HashMap<>();
+
+        // Loeme andmed ainult sisse, kui need on olemas
+        File fail = new File("edetabel.dat");
+        if (fail.exists() && fail.length() != 0) tulemused.putAll(loeSisse());
+
+        // Lisame hetkese mängija
+        tulemused.put(nimi, punktid);
+
+        // Kirjutame andmed
+        try (DataOutputStream valja = new DataOutputStream(new FileOutputStream("edetabel.dat"))) {
+            int kordi = tulemused.size();
+
+            valja.writeInt(kordi);
+
+            String nimi;
+            int punkte;
+            for (Map.Entry<String, Integer> stringIntegerEntry : tulemused.entrySet()) {
+                nimi = stringIntegerEntry.getKey();
+                punkte = stringIntegerEntry.getValue();
+
+                valja.writeUTF(nimi);
+                valja.writeInt(punkte);
+            }
+        }
+
+    }
+
+    /**
+     * Loeb edetabeli info sisse failist edetabel.dat
+     * @return Tagastab sõnastiku nimedest ja nende punktidest
+     * @throws IOException -- Vajalik et töötaks
+     */
+    private Map<String, Integer> loeSisse() throws IOException{
+        Map<String, Integer> tulemused = new HashMap<>();
+        try (DataInputStream sisse = new DataInputStream(new FileInputStream("edetabel.dat"))) {
+
+            int tulemusi = sisse.readInt();
+            int punkte;
+            String nimi;
+            for (int i = 0; i < tulemusi; i++) {
+                nimi = sisse.readUTF();
+                punkte = sisse.readInt();
+
+                tulemused.put(nimi, punkte);
+            }
+        }
+        return tulemused;
     }
 
 

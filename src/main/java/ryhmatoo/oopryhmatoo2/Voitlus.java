@@ -3,6 +3,7 @@ package ryhmatoo.oopryhmatoo2;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -10,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,7 +23,7 @@ public class Voitlus  implements StseeniLooja{
     private SeanssiHaldur vahetaja;
     private Mäng loogika;
     private ImageView vastasePilt;
-    private TextArea logi = new TextArea();
+    private TextArea logi;
     private ArrayList<Button> nupud;
     private boolean tegevusKaib;
 
@@ -36,6 +38,8 @@ public class Voitlus  implements StseeniLooja{
         this.vastasePilt = looVastane(loogika.getVastane());
         nupud = new ArrayList<>(3);
         tegevusKaib = false;
+        logi = new TextArea();
+        logi.setFont(Font.font(18));
     }
 
     /**
@@ -60,8 +64,8 @@ public class Voitlus  implements StseeniLooja{
     private Button looNupp(String tekst) {
 
         // AI abil tehtud stiilid
-        String tavaline = "-fx-background-color: #FF8C00; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
-        String hover   = "-fx-background-color: #FFA500; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
+        String tavaline = "-fx-background-color: #FF8C00; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand;";
+        String hover   = "-fx-background-color: #FFA500; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand;";
 
         Button nupp = new Button(tekst);
         nupp.setStyle(tavaline);
@@ -106,9 +110,10 @@ public class Voitlus  implements StseeniLooja{
         Button rundaNupp  = looNupp("RÜNDA");
         Button kaitseNupp = looNupp("KAITSE");
         Button raviNupp   = looNupp("RAVI");
-        nupud.add(rundaNupp);
-        nupud.add(kaitseNupp);
-        nupud.add(raviNupp);
+        this.nupud.add(rundaNupp);
+        this.nupud.add(kaitseNupp);
+        this.nupud.add(raviNupp);
+
 
 
         // Nupud püüavad kui liiga palju nuppe vajutatud
@@ -134,6 +139,12 @@ public class Voitlus  implements StseeniLooja{
         // Paneb nupud ühte kasti
         VBox nupud = new VBox(10, rundaNupp, kaitseNupp, raviNupp);
         nupud.setAlignment(Pos.CENTER); // keskele
+
+        for (Node child : nupud.getChildren()) {
+            Button nupp = (Button) child;
+            nupp.prefWidthProperty().bind(nupud.widthProperty().multiply(0.65));
+            nupp.prefHeightProperty().bind(nupud.heightProperty().multiply(0.15));
+        }
 
 
         // teksti "konsool" - sain omadused AI-lt (editable, wraptext)
@@ -252,7 +263,7 @@ public class Voitlus  implements StseeniLooja{
 
         kajastaLahinguTulemus(tulemus);
 
-        PauseTransition maga = new PauseTransition(new Duration(5000));
+        PauseTransition maga = new PauseTransition(new Duration(4000));
 
         maga.setOnFinished(e -> {
             if (tulemus.getSurnud() == null) valjastaTegelasteInfo();
@@ -307,7 +318,7 @@ public class Voitlus  implements StseeniLooja{
         }
 
         // Väikene paus enne kui tagasi lähme
-        PauseTransition maga = new PauseTransition(new Duration(5000));
+        PauseTransition maga = new PauseTransition(new Duration(2000));
         maga.setOnFinished(e -> valjastaTegelasteInfo());
         maga.play();
     }
@@ -346,10 +357,14 @@ public class Voitlus  implements StseeniLooja{
         logi.appendText(info.toString());
     }
 
+    /**
+     * Siis kui kõik vastased on tapetud, paneb sulle võidu ekraani
+     */
     private void voitKoik() {
 
+        loogika.voit();
         // kaotuse stseenile viskamine
-        Voit voitis = new Voit(vahetaja, loogika.getTudeng().getPunkte());
+        Voit voitis = new Voit(vahetaja, loogika.getTudeng().getPunkte(), loogika.getTudeng().getNimi());
         vahetaja.lisaStseen("VOIT",voitis.looStseen());
         vahetaja.vahetaStseen("VOIT");
     }
@@ -379,12 +394,11 @@ public class Voitlus  implements StseeniLooja{
      */
     private void voitUksik(LahinguTulemus tulemus) {
         puhastaLogi();
+        int vastasePunktid = loogika.voit();
         StringBuilder info = new StringBuilder(100);
 
-        int vastasePunktid = tulemus.getVastane().getPunkteVaart();
         info.append("Tapsid ära " + tulemus.getVastane().toString() + "\n");
         info.append("Teenisid " + vastasePunktid + " punkti!");
-        tulemus.getTudeng().lisaPunkte(vastasePunktid);
 
         logi.appendText(info.toString());
 

@@ -33,10 +33,8 @@ public class SeanssiHaldur {
      * Lisab haldurisse stseene. Ei luba topelt stseene, kui just pole voitluse oma, et lubada korduv mängimist
      * @param nimi -- Stseeni nimi
      * @param stseen -- Stseen ise
-     * @throws StseeniErind -- Erind, kui stseen juba lisatud
      */
     public void lisaStseen(String nimi, Scene stseen) throws StseeniErind {
-        if (ekraanid.get(nimi) == null || nimi.equals("VOITLUS")) ekraanid.put(nimi, stseen);
-        else throw new StseeniErind("Ekraan juba lisatud!");
+        ekraanid.put(nimi, stseen);
     }
 }
