@@ -3,9 +3,12 @@ package ryhmatoo.oopryhmatoo2;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 public class Edetabel implements StseeniLooja{
+    private SeanssiHaldur vahetaja;
+
+
+
 
     public Scene looStseen() {
         Pane juur = new Pane();
@@ -21,6 +24,7 @@ public class Edetabel implements StseeniLooja{
         Scene stseen = new Scene(juur, 1200, 720);
 
         return new Scene(juur);
+
     }
 
 }

@@ -158,14 +158,14 @@ public class Voitlus  implements StseeniLooja{
                 CornerRadii.EMPTY,
                 new BorderWidths(2)
         )));
-
+        */
         ulemineAla.setBorder(new Border(new BorderStroke(
-                Color.BLUE,
+                Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY,
                 new BorderWidths(2))));
 
-         */
+
 
         return stseen;
 
@@ -210,14 +210,16 @@ public class Voitlus  implements StseeniLooja{
         StackPane.setAlignment(alus, Pos.BOTTOM_CENTER);
         StackPane.setAlignment(tegelaseKoht, Pos.CENTER);
 
-        //Debuggimiseks abi
+        //Debuggimiseks abi ja iluks
         /*
         tegelaseKoht.setBorder(new Border(new BorderStroke(
-                Color.GREEN,
+                Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY,
                 new BorderWidths(2))));
+
          */
+
 
 
         // Määrame pildi laiuse
