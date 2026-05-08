@@ -1,9 +1,14 @@
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class Karistus {
+import static javafx.application.Application.launch;
+
+public class Karistus extends Application {
+
+    public void main(String[] args) {launch(args);}
 
     public void start(Stage lava) {
         Pane juur = new Pane();
@@ -18,7 +23,7 @@ public class Karistus {
 
         juur.setBackground(new Background(bg));
 
-        Scene stseen = new Scene(juur, 400, 400);
+        Scene stseen = new Scene(juur, 1920, 1080);
         lava.setTitle("Vaata seda klouni!");
         lava.setScene(stseen);
         lava.show();

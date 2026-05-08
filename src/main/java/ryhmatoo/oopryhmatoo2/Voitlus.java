@@ -173,8 +173,7 @@ public class Voitlus  implements StseeniLooja{
 
     private void teeTegevus(Tegevus tudengiTegevus) {
         if (tegevusKaib) {
-            muudaNuppudeOlek(false);
-
+            karistus();
         }
         tegevusKaib = true;
         puhastaLogi();
@@ -196,6 +195,11 @@ public class Voitlus  implements StseeniLooja{
             muudaNuppudeOlek(true);
         });
         maga.play();
+    }
+
+    private void karistus() {
+        muudaNuppudeOlek(false);
+        
     }
 
     private void voiduKontroll(LahinguTulemus tulemus) {

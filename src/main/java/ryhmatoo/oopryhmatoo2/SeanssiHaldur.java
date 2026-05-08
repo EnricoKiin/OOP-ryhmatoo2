@@ -25,7 +25,7 @@ public class SeanssiHaldur {
     }
 
     public void lisaStseen(String nimi, Scene stseen) throws StseeniErind {
-        if (ekraanid.get(nimi) == null) ekraanid.put(nimi, stseen);
+        if (ekraanid.get(nimi) == null || nimi.equals("VOITLUS")) ekraanid.put(nimi, stseen);
         else throw new StseeniErind("Ekraan juba lisatud!");
     }
 }
