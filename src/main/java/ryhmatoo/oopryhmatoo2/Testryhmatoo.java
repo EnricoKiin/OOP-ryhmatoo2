@@ -21,7 +21,7 @@ public class Testryhmatoo extends Application {
 
 
     /**
-     * Tekitame Tudengi ja Vastase ning mängime surmani.
+     * Tekitame Stardimenüü ja selle kaks järgmist ekraani ning anname töö üle GUI-le ning selle haldurile
      */
     public void start(Stage lava) throws StseeniErind {
 
@@ -36,25 +36,5 @@ public class Testryhmatoo extends Application {
         vahetaja.lisaStseen("NIMI", nimeValik.looStseen());
 
         vahetaja.vahetaStseen("START");
-
-
-        /*
-
-        // Loopime kõik vastased läbi, kuni keegi sureb.
-        for (Vastane vastane : vastased) {
-            Mäng mäng = new Mäng(tudeng, vastane, teadeteLogi);
-            mäng.mängi();
-
-            // Lisa shade, kui mängija ei saa hakkama
-            if (!tudeng.onElus()) {
-                Platform.runLater(() ->teadeteLogi.appendText("Kaotasid mängu. Get good kid\n"));
-                break;
-            }
-        }
-        if (tudeng.onElus()) {
-            Platform.runLater(() -> teadeteLogi.appendText("Lõpetasid mängu " + tudeng.getPunkte() + " punktiga!" + "\n"));
-        }
-
-         */
     }
 }

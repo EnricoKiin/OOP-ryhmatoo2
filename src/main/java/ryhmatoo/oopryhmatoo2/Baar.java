@@ -18,6 +18,7 @@ public class Baar extends Vastane {
 
     /**
      * Boostib ründe dmg, kuni surmani. Vt Vastase klassi, et näha kui palju
+     * @param info -- Paketti moodi klass, mis salvestab kõik ütlused ja muu info lahingus
      */
     @Override
     public void ryndeBoost(LahinguTulemus info) {
@@ -63,12 +64,17 @@ public class Baar extends Vastane {
      * Baari elude kaotamise loogika. Kasutab ülemklassi, et elusid kaotada, aga alamklassi ülekattet
      * et lauseid välja öelda
      * @param dmg -- Kuib palju elusid kaotab. Alati positiivne arv
-     * @param info -- Vaike klass, mis teeskleb end pakettiks ja liigutab infot ringi.
+     * @param info -- Paketti moodi klass, mis salvestab kõik ütlused ja muu info lahingus
      */
     @Override
     public void kaotaElud(int dmg, LahinguTulemus info) {
-        if (this.getTegevus()==Tegevus.KAITSE)
+        if (this.getTegevus()==Tegevus.KAITSE) {
             info.lisaVastaseLause("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu.");
+
+            // Kasutab tavalist algset elude kaotamist, et hiilda mööda teksti dubleerimisest
+            super.kaotaElud(dmg);
+            return;
+        }
         else {
             // Lausete valik listist
             List<String> kaitselaused = this.getKaitselaused();

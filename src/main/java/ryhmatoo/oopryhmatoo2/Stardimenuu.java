@@ -23,6 +23,11 @@ public class Stardimenuu implements StseeniLooja{
         this.vahetaja = vahetaja;
     }
 
+    /**
+     * Loob stardimenüü stseeni
+     * @return Stardimenüü stseen
+     * @throws StseeniErind -- kui stseen valesti käsitletakse (topelt lisamine, null kutsumine)
+     */
     public Scene looStseen() throws StseeniErind {
         Pane juur = new Pane();
 
@@ -130,13 +135,18 @@ public class Stardimenuu implements StseeniLooja{
         return stseen;
     }
 
-    //Ainult nuppude ja menüü debuggimiseks, sest need vihkasid mind
+    /**
+     * Stiliseerib ette antud nupu
+     * @param nupp -- Nupp millele stiil anda
+     * @param nupud -- VBox mill sees nupp on ja millelt ta oma suuruest saab
+     */
     private void stiiliNupp(Button nupp, VBox nupud) {
 
         //Iga nupp saab täpselt sama palju ruumi
         nupp.prefHeightProperty().bind(nupud.heightProperty().multiply(0.45));
         nupp.prefWidthProperty().bind(nupud.prefWidthProperty().multiply(0.9));
 
+        // Tausta määramine
         Image bg = new Image("nupp.png");
 
         BackgroundImage bgImg = new BackgroundImage(bg,
@@ -150,6 +160,7 @@ public class Stardimenuu implements StseeniLooja{
         nupp.setFont(Font.font(15));
     }
 
+    //Ainult nuppude ja menüü debuggimiseks, sest need vihkasid mind
     private static void kusKuratOnSeeKast(VBox nupud, Pane menüü) {
         menüü.setBorder(new Border(
                 new BorderStroke(

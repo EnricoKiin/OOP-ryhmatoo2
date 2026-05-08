@@ -7,6 +7,13 @@ public class LahinguTulemus {
     private StringBuilder tudengLause;
     private StringBuilder vastaseLause;
 
+    /**
+     * Loob esialgse paketti moodi klassi
+     * @param tudeng -- Kes on tudeng
+     * @param vastane -- Kes on vastane
+     * Meetod on ainult selleks, et mängu loogika klassist Mäng saaks edastada infot GUI-le ilma,
+     * et nad teaksid üksteisest eriti palju. Aitab hoida loogika ja GUI lahus.
+     */
     public LahinguTulemus(Tudeng tudeng, Vastane vastane) {
         this.tudeng = tudeng;
         this.vastane = vastane;

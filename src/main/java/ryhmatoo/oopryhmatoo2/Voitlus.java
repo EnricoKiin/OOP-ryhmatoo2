@@ -25,6 +25,11 @@ public class Voitlus  implements StseeniLooja{
     private ArrayList<Button> nupud;
     private boolean tegevusKaib;
 
+    /**
+     * Voitlus GUI konstruktor
+     * @param vahetaja -- seansihaldur, mis suudab edasi suunata järgmistele ekraanidele
+     * @param loogika -- mängu loogika haldur
+     */
     public Voitlus(SeanssiHaldur vahetaja, Mäng loogika) {
         this.vahetaja = vahetaja;
         this.loogika = loogika;
@@ -33,6 +38,11 @@ public class Voitlus  implements StseeniLooja{
         tegevusKaib = false;
     }
 
+    /**
+     * Ette antud vaste puhul võtab selle pildi ja jätab meelde
+     * @param vastane -- Vastane kellest pilti teeme
+     * @return Vastase pilt
+     */
     private ImageView looVastane(Vastane vastane) {
         return new ImageView(new Image(vastane.getNimi() + ".png"));
     }
@@ -42,6 +52,11 @@ public class Voitlus  implements StseeniLooja{
     }
 
 
+    /**
+     * Annab nuppudele stiili ja loob need
+     * @param tekst -- Mis tekst nupu sees on
+     * @return Stiliseeritud nupu
+     */
     private Button looNupp(String tekst) {
 
         String tavaline = "-fx-background-color: #FF8C00; -fx-font-size: 20px; -fx-font-weight: bold; -fx-min-width: 150px; -fx-min-height: 50px; -fx-cursor: hand;";
@@ -57,7 +72,10 @@ public class Voitlus  implements StseeniLooja{
     }
 
 
-
+    /**
+     * Loob võitluse Stseeni
+     * @return võitluse stseen
+     */
     public Scene looStseen() {
 
         BorderPane juur = new BorderPane();
@@ -78,11 +96,6 @@ public class Voitlus  implements StseeniLooja{
         StackPane tegelaseKoht = looKaraketeriAla(tegelane, ulemineAla);
         StackPane.setAlignment(tegelaseKoht, Pos.BOTTOM_RIGHT);
 
-        ulemineAla.setBorder(new Border(new BorderStroke(
-                Color.BLUE,
-                BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,
-                new BorderWidths(2))));
 
         // Vastase loomine
         paneVastanePaika(ulemineAla);
@@ -117,21 +130,16 @@ public class Voitlus  implements StseeniLooja{
             catch (NuppuErind i) {karistus();}
         });
 
-
+        // Paneb nupud ühte kasti
         VBox nupud = new VBox(10, rundaNupp, kaitseNupp, raviNupp);
         nupud.setAlignment(Pos.CENTER); // keskele
 
-        nupud.setBorder(new Border(new BorderStroke(
-                Color.RED,
-                BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY,
-                new BorderWidths(2)
-        )));
 
         // teksti "konsool"
         logi.setEditable(false); // mängija ei saa sinna ise kirjutada
         logi.setWrapText(true); // tekst läheb järgmisele reale, kui aken saab läbi
 
+        // Alumise ala elementide suurust timmimine
         alumineAla.getChildren().addAll(logi, nupud);
         logi.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.7));
         nupud.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.3));
@@ -140,15 +148,44 @@ public class Voitlus  implements StseeniLooja{
         valjastaTegelasteInfo();
 
         Scene stseen = new Scene(juur, 1200, 720);
+
+        // Debuggimiseks abi
+        /*
+        nupud.setBorder(new Border(new BorderStroke(
+                Color.RED,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2)
+        )));
+
+        ulemineAla.setBorder(new Border(new BorderStroke(
+                Color.BLUE,
+                BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,
+                new BorderWidths(2))));
+
+         */
+
         return stseen;
 
     }
 
+    /**
+     * Tekitab vastase kastikese.
+     * @param ulemineAla -- Ala kuhu see kast panna
+     */
     private void paneVastanePaika(StackPane ulemineAla) {
         StackPane vastaseKoht = looKaraketeriAla(vastasePilt, ulemineAla);
         StackPane.setAlignment(vastaseKoht, Pos.TOP_LEFT);
     }
 
+    /**
+     * Meetod, mis loob tegelase pildi abil selle jaoks vastava kasti, mida panna ulemisse ekraani ossa.
+     * Täpset kasti asukohta määrab looStseen
+     * @param tegelane -- Tegelase pilt, keda hakkame kombineerima kastiks
+     * @param ulemineAla -- Ala kuhu hiljem ta lisame. Sellelt saab ka ta oma möödud
+     * @return -- StackPane kast, kus on tegelase ja aluse pilt kokku pandud.
+     */
     private static StackPane looKaraketeriAla(ImageView tegelane, StackPane ulemineAla) {
         //Aluse pilt
         ImageView alus = new ImageView(new Image("Seisukoht.png"));
@@ -172,11 +209,14 @@ public class Voitlus  implements StseeniLooja{
         StackPane.setAlignment(alus, Pos.BOTTOM_CENTER);
         StackPane.setAlignment(tegelaseKoht, Pos.CENTER);
 
+        //Debuggimiseks abi
+        /*
         tegelaseKoht.setBorder(new Border(new BorderStroke(
                 Color.GREEN,
                 BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY,
                 new BorderWidths(2))));
+         */
 
 
         // Määrame pildi laiuse
@@ -218,6 +258,10 @@ public class Voitlus  implements StseeniLooja{
         maga.play();
     }
 
+    /**
+     * Karistus juhtub siis, kui kasutaja teeb midagi valesti
+     * Viskab musta ekraani popup akna, kus paneb sind elu üle mõtlema
+     */
     private void karistus() {
         Stage lava = new Stage();
 
@@ -243,7 +287,13 @@ public class Voitlus  implements StseeniLooja{
         lava.show();
     }
 
+
+    /**
+     * Kontrollib, kas keegi on võitnud. Eeldab, et on kontrollitud, kas surnud == null
+     * @param tulemus -- Paketti klass, kus on viimase lahingu tulemuse info
+     */
     private void voiduKontroll(LahinguTulemus tulemus) {
+
         if (tulemus.getSurnud().equals(tulemus.getVastane())) {
             // Kas on viimane vastane
             if (loogika.getVastased().size() == loogika.getMitmesVastane()) voitKoik();
@@ -253,6 +303,7 @@ public class Voitlus  implements StseeniLooja{
             kaotus(tulemus);
         }
 
+        // Väikene paus enne kui tagasi lähme
         PauseTransition maga = new PauseTransition(new Duration(5000));
         maga.setOnFinished(e -> valjastaTegelasteInfo());
         maga.play();
@@ -266,18 +317,20 @@ public class Voitlus  implements StseeniLooja{
         puhastaLogi();
         StringBuilder info = new StringBuilder(100);
 
+        // Tegelaste nimed ja elud
         info.append(loogika.getVastane().toString() + ": " + loogika.getVastane().getElud() + "hp" + "\n");
         info.append(loogika.getTudeng().toString() + ": " + loogika.getTudeng().getElud() + "hp" + "\n");
 
         logi.appendText(info.toString());
 
+        // Tegevuse oleku algväärtustamine ja nuppude lubamine
         tegevusKaib = false;
         muudaNuppudeOlek(true);
     }
 
     /**
      * Paneb tekstikasti lahingu tulemuse info
-     * @param tulemus
+     * @param tulemus -- Paketti klass, mis hoiab viimase lahingu tulemuse infot
      */
     private void kajastaLahinguTulemus(LahinguTulemus tulemus) {
         StringBuilder info = new StringBuilder(200);
@@ -296,7 +349,7 @@ public class Voitlus  implements StseeniLooja{
 
     /**
      * Kui tudeng suri, siis anname teade, et ta kaotas
-     * @param tulemus -- Pakett kus info, et mis juhtus
+     * @param tulemus -- Pakett kus info, et mis juhtus viimases lahingus
      */
     private void kaotus(LahinguTulemus tulemus) {
         puhastaLogi();
@@ -333,6 +386,9 @@ public class Voitlus  implements StseeniLooja{
 
     }
 
+    /**
+     * Meetod, mis vahetab vastast nii loogikas kui ka GUI-s, kui on veel järgmiseid vastaseid
+     */
     private void vahetaVastane() {
         loogika.vahetaVastane();
         vastasePilt.setImage(new Image(loogika.getVastane().getNimi() + ".png"));
