@@ -22,6 +22,7 @@ public class Tudeng extends Tegelane{
     /**
      * Tudengi tegevus, kui ta otsustab teha BOOST. Lisab elusid 30% elusid juurde
      * Ei lähe üle max elude, mis alguses määrati talle
+     * @param info -- Paketti moodi klass, mis salvestab kõik ütlused ja muu info lahingus
      */
     public void saaStippi(LahinguTulemus info) {
         int maxElud = this.getMaxElud();
@@ -58,6 +59,7 @@ public class Tudeng extends Tegelane{
      * Ülekaetud lisameetod, mis võtab elusid ära tegelaselt ja ütleb vastase ründe lauseid
      * @param dmg -- Kui palju elusid kaotab
      * @param vastane -- Vastane, kelle lauseid kasutada
+     * @param info -- Paketti moodi klass, mis salvestab kõik ütlused ja muu info lahingus
      */
     public void kaotaElud(int dmg, Vastane vastane, LahinguTulemus info) {
         List<String> vastaseLaused = vastane.getRyndeLaused();

@@ -17,7 +17,10 @@ public class Kaotus implements StseeniLooja{
         this.vahetaja=vahetaja;
     }
 
-
+    /**
+     * Looba kaotus ekraani stseeni
+     * @return Kaotus ekraani stseen
+     */
     public Scene looStseen() {
 
         StackPane sisu = new StackPane();

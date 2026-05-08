@@ -33,6 +33,7 @@ public abstract class Vastane extends Tegelane{
 
     /**
      * Vastase tegevuse, kui tal tuleb BOOST tegevus
+     * @param info -- Paketti moodi klass, mis salvestab kõik ütlused ja muu info lahingus
      */
     public void ryndeBoost(LahinguTulemus info) {
         int boost = 2;

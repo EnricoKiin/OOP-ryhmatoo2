@@ -17,9 +17,13 @@ public class EnneMangu implements StseeniLooja{
         this.vahetaja = vahetaja;
     }
 
-
+    /**
+     * Loob nime valimiseks stseeni
+     * @return Stseen, kus saab endale nime valida
+     */
     public Scene looStseen() {
 
+        // Kus tahame elemente hoida
         VBox sisu = new VBox(20);
         sisu.setAlignment(Pos.CENTER);
         sisu.setPadding(new Insets(30));

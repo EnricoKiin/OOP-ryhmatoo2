@@ -14,17 +14,14 @@ public class Mäng {
     private Tudeng tudeng;
     private ArrayList<Vastane> vastased;
     private Vastane vastane;
-    private TextArea teadeteLogi;
-    private Tegevus tudengiOtsus;
     private int mitmesVastane;
 
+    /**
+     * Määrab tudengile otsuse. Kutsutav väljaspoolt nagu GUI-st, et tagada nuppude ja loogika vastavuse
+     * @param tudengiOtsus -- Mis tegevust tudeng teeb
+     */
     public void setTudengiOtsus(Tegevus tudengiOtsus) {
-        this.tudengiOtsus = tudengiOtsus;
         tudeng.setTegevus(tudengiOtsus);
-    }
-
-    public void setVastane(Vastane vastane) {
-        this.vastane = vastane;
     }
 
     public Vastane getVastane() {
@@ -39,6 +36,11 @@ public class Mäng {
         return vastased;
     }
 
+    /**
+     * Mängu loogika konstruktor tudengi nime alusel
+     * Initsialiseerib vastased
+     * @param tudengiNimi -- Tudengi nimi
+     */
     public Mäng(String tudengiNimi) {
         this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 30); // 5
         this.vastased = new ArrayList<>();
@@ -48,6 +50,9 @@ public class Mäng {
         this.mitmesVastane = 1;
     }
 
+    /**
+     * Loob vastased, kelle vastu hakkame võitlema
+     */
     private void looVastased() {
         Baar baar1 = looBaar("Atso", 1);
         Baar baar2 = looBaar("Seik", 2);
@@ -61,6 +66,9 @@ public class Mäng {
         return tudeng;
     }
 
+    /**
+     * Otsutab vastase tegevuse ära juhu arvu abil
+     */
     public void otsustaVastaseTegevus() {
         // Vaste tegevuse välja loosimine
         // Tahame ründamist rohkem, et mängija ei saaks end liiga mugavalt tunda
@@ -78,59 +86,9 @@ public class Mäng {
 
 
     /**
-     * Peameetod, mis tegeleb kogu mängu loogikaga
-     * Peamine flow on:
-     * 1. Vastase tegevuse välja loosimine
-     * 2. Tudeng otsustab oma tegevuse terminali kirjutades
-     * 3. lahing tehakse läbi
-     * 4. Kontrollitakse tegelaste elus olekut
-     * 5. Kui tudeng sureb, siis kaotus(). Kui võidab siis voit()
-     */
-    public void mängi() {
-        int TudengiOtsus;
-        int vastaneTegevus;
-
-        /*
-        // Tegevuste valimise ja lahingute tsükkel, mis kestab kuni keegi sureb
-        while (vastane.onElus() && tudeng.onElus()) {
-            puhastaEkraan();
-            mänguSeis();
-
-            // Määrab vastavalt otsusele tegevuse
-            switch (tudengiOtsus) {
-                case Tegevus.RYNDA:
-                    tudeng.setTegevus(Tegevus.RYNDA);
-                    break;
-                case Tegevus.KAITSE:
-                    tudeng.setTegevus(Tegevus.KAITSE);
-                    break;
-                case Tegevus.RAVI:
-                    tudeng.setTegevus(Tegevus.RAVI);
-                    break;
-            }
-            // Lahing ja ootamine, et näha lauseid
-            lahing();
-
-        }
-
-        // Kontrollimine, et kes suri
-        if (!tudeng.onElus()) {
-            kaotus();
-        }
-        else {
-            voit();
-        }
-        maga(5000);
-        puhastaEkraan();
-
-        */
-    }
-
-
-    /**
      * Korraldab Tudengi ja Vastase vahel lahingut
      * Eelistab Tudengi tegevust Vastase omale
-     * @return Tagastab Vastava klassi isendi, kes ära suri. Muidu null. Hetkel pole kasutatud tagastusväärtust
+     * @return Paketti moodi klassi LahinguTulemus, kus on salvestad hetke lahingu tulemuse info ja kes suri koos lausetega
      */
     public LahinguTulemus lahing () {
         Tegevus tudengiOtsus = tudeng.getTegevus();
@@ -203,17 +161,17 @@ public class Mäng {
         Easy:
             Elud: 12-17
             KaitseProtsent: 0.1-0.3
-            RyndaDmg: 3-5
+            RyndaDmg: 3-4
 
         Medium:
             Elud: 15-23
             KaitseProtsent: 0.3-0.5
-            RyndaDmg: 4-6
+            RyndaDmg: 4-5
 
          Hard:
             Elud: 18-27
             KaitseProtsent: 0.4-0.6
-            RyndaDmg: 5-7
+            RyndaDmg: 5-6
          */
 
 
