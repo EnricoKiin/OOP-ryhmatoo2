@@ -180,12 +180,19 @@ public class Voitlus  implements StseeniLooja{
 
 
         // Määrame pildi laiuse
-        tegelane.fitWidthProperty().bind(tegelaseKoht.prefWidthProperty().multiply(0.3));
+        tegelane.fitWidthProperty().bind(tegelaseKoht.prefWidthProperty().multiply(0.6));
+        tegelane.fitHeightProperty().bind(tegelaseKoht.prefHeightProperty().multiply(0.8));
         tegelane.setPreserveRatio(true); // Säilitab pildi proportsioonid
 
         return tegelaseKoht;
     }
 
+
+    /**
+     * Kui kasutaja otsustab mingise tegevuse kasuks, siis see funktsioon lükkab loogika käima ning
+     * seejärel annab lahingu info edasi, et kajasta ekraanil
+     * @param tudengiTegevus
+     */
     private void teeTegevus(Tegevus tudengiTegevus) {
         if (tegevusKaib) {
             muudaNuppudeOlek(false);
@@ -207,8 +214,6 @@ public class Voitlus  implements StseeniLooja{
         maga.setOnFinished(e -> {
             if (tulemus.getSurnud() == null) valjastaTegelasteInfo();
             else voiduKontroll(tulemus);
-            tegevusKaib = false;
-            muudaNuppudeOlek(true);
         });
         maga.play();
     }
@@ -254,7 +259,8 @@ public class Voitlus  implements StseeniLooja{
     }
 
     /**
-     * Väljastab hetkeste tegelaste elude seisu ja nimed
+     * Väljastab hetkeste tegelaste elude seisu ja nimed.
+     * Lähtestab ka nuppud ja tegevuse oleku.
      */
     private void valjastaTegelasteInfo() {
         puhastaLogi();
@@ -264,6 +270,9 @@ public class Voitlus  implements StseeniLooja{
         info.append(loogika.getTudeng().toString() + ": " + loogika.getTudeng().getElud() + "hp" + "\n");
 
         logi.appendText(info.toString());
+
+        tegevusKaib = false;
+        muudaNuppudeOlek(true);
     }
 
     /**
