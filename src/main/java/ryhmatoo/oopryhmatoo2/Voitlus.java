@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -199,7 +201,29 @@ public class Voitlus  implements StseeniLooja{
 
     private void karistus() {
         muudaNuppudeOlek(false);
-        
+
+        Stage lava = new Stage();
+
+        Pane juur = new Pane();
+
+        // Tausta loomine
+        ImageView kloun = new ImageView(new Image("Kloun.png"));
+        juur.getChildren().add(kloun);
+
+        kloun.fitWidthProperty().bind(juur.widthProperty());
+        kloun.fitHeightProperty().bind(juur.heightProperty());
+
+        kloun.setPreserveRatio(false);
+
+        //Ai abiga saadud info, kuidas kasutaja ekraani suurust saada
+        Rectangle2D ekraaniSuurus = Screen.getPrimary().getVisualBounds();
+        double korgus = ekraaniSuurus.getHeight();
+        double laius = ekraaniSuurus.getWidth();
+
+        Scene stseen = new Scene(juur, laius, korgus);
+        lava.setTitle("Vaata seda klouni!");
+        lava.setScene(stseen);
+        lava.show();
     }
 
     private void voiduKontroll(LahinguTulemus tulemus) {
