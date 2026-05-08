@@ -19,12 +19,7 @@ public class Mäng {
 
     public void setTudengiOtsus(Tegevus tudengiOtsus) {
         this.tudengiOtsus = tudengiOtsus;
-    }
-
-    public Mäng(Tudeng tudeng, Vastane vastane, TextArea logi) {
-        this.tudeng = tudeng;
-        this.vastane = vastane;
-        this.teadeteLogi = logi;
+        tudeng.setTegevus(tudengiOtsus);
     }
 
     public void setVastane(Vastane vastane) {
@@ -52,34 +47,8 @@ public class Mäng {
         vastased.add(baar3);
     }
 
-    /**
-     * Lahendab kõik elu probleemid ainult 20 sout'ga
-     * Teeb nagu nimi ütleb
-     */
-    public void puhastaEkraan() {
-        for (int i = 0; i < 20; i++) {
-            System.out.println();
-        }
-    }
-
-    /**
-     * Prindib pärast igat lahingu etappi hetkese mängu seisu meetodis mängi()
-     */
-    public void mänguSeis() {
-        puhastaEkraan();
-        Platform.runLater(() -> teadeteLogi.appendText(vastane.toString() + ": " + vastane.getElud() + "hp" + "\n"));
-        Platform.runLater(() -> teadeteLogi.appendText(tudeng.toString() + ": " + tudeng.getElud() + "hp" + "\n"));
-    }
-
-    /**
-     * Paneb mängu seisma kindlaks määratud ajaks, et jõuaks teksti lugeda
-     * @param aeg -- millisekundites antud aeg
-     */
-    public void maga(int aeg) {
-        try {
-            Thread.sleep(aeg);
-        }
-        catch (InterruptedException ignored) {}
+    public Tudeng getTudeng() {
+        return tudeng;
     }
 
     public void otsustaVastaseTegevus() {
@@ -111,7 +80,7 @@ public class Mäng {
         int TudengiOtsus;
         int vastaneTegevus;
 
-
+        /*
         // Tegevuste valimise ja lahingute tsükkel, mis kestab kuni keegi sureb
         while (vastane.onElus() && tudeng.onElus()) {
             puhastaEkraan();
@@ -131,7 +100,7 @@ public class Mäng {
             }
             // Lahing ja ootamine, et näha lauseid
             lahing();
-            maga(5000);
+
         }
 
         // Kontrollimine, et kes suri
@@ -144,39 +113,21 @@ public class Mäng {
         maga(5000);
         puhastaEkraan();
 
-
+        */
     }
 
-    /**
-     * Meetod, mis kuvab tudengi saadud punktide arvu pärast surma. Kogu mängu lõpp
-     */
-    public void kaotus() {
-        puhastaEkraan();
-        Platform.runLater(() -> teadeteLogi.appendText("Surid ära!\n"));
-        Platform.runLater(() -> teadeteLogi.appendText("Lõpetasid: " + tudeng.getPunkte() + " punktiga" + "\n"));
-    }
-
-    /**
-     * Meetod, mis aktiveerub, kui tudeng tappis vastase.
-     * Ütleb palju punkte tudeng sai ja kasutab vastavaid meetode, et neid lisada
-     */
-    public void voit() {
-        puhastaEkraan();
-        int vastasePunktid = vastane.getPunkteVaart();
-        Platform.runLater(() -> teadeteLogi.appendText("Tapsid ära " + vastane.toString() + "\n"));
-        Platform.runLater(() -> teadeteLogi.appendText("Teenisid " + vastasePunktid + " punkti!" + "\n"));
-        tudeng.lisaPunkte(vastasePunktid);
-    }
 
     /**
      * Korraldab Tudengi ja Vastase vahel lahingut
      * Eelistab Tudengi tegevust Vastase omale
      * @return Tagastab Vastava klassi isendi, kes ära suri. Muidu null. Hetkel pole kasutatud tagastusväärtust
      */
-    public Tegelane lahing () {
+    public LahinguTulemus lahing () {
         Tegevus tudengiOtsus = tudeng.getTegevus();
         Tegevus vastaseOtsus = vastane.getTegevus();
-        puhastaEkraan();
+
+        LahinguTulemus info = new LahinguTulemus(tudeng, vastane);
+
 
         // Tudengil on ründamises eelis
         if (tudengiOtsus == Tegevus.RYNDA) {
@@ -184,14 +135,19 @@ public class Mäng {
             if (vastaseOtsus == Tegevus.KAITSE) {
                 tudengATK -=  (int)(tudengATK * vastane.getKaitseProtsent());
             }
-            vastane.kaotaElud(tudengATK);
+            vastane.kaotaElud(tudengATK, info);
+
+            //Kui vastane suri ära pole vaja jätkata
             if (!vastane.onElus()) {
-                return vastane;
+                info.setSurnud(vastane);
+                return info;
             }
         }
+
+
         // Tudeng saab alati elusid endale juurde anda enne kui vastas saab rünnata
         if (tudengiOtsus == Tegevus.RAVI) {
-            tudeng.saaStippi();
+            tudeng.saaStippi(info);
         }
 
         // Vastase ründeskeem
@@ -201,25 +157,27 @@ public class Mäng {
                 vastaseATK -= (int)(vastaseATK * tudeng.getKaitseProtsent());
             }
             System.out.println();
-            tudeng.kaotaElud(vastaseATK, vastane);
+            tudeng.kaotaElud(vastaseATK, vastane, info);
+
+            // Kui tudeng suri ära, siis pole vaja rohkem kontrollida
             if (!tudeng.onElus()) {
-                return tudeng;
+                info.setSurnud(tudeng);
+                return info;
             }
 
         }
         // Vastane boostib enda ATK
         if (vastaseOtsus == Tegevus.BOOST) {
             System.out.println();
-            vastane.ryndeBoost();
+            vastane.ryndeBoost(info);
         }
 
         // Olukord kui mõlemad kaitsevad
         if (vastaseOtsus == Tegevus.KAITSE && tudengiOtsus == Tegevus.KAITSE) {
-            Platform.runLater(() -> teadeteLogi.appendText("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist." + "\n"));
+            info.lisaTudengLause("Kumbki ei julgenud midagi teha. Niisama jõllitasite üksteist.");
         }
 
-        // null kui keegi ei surnud
-        return null;
+        return info;
 
 
     }

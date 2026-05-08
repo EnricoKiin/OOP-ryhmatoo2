@@ -34,11 +34,23 @@ public abstract class Vastane extends Tegelane{
     /**
      * Vastase tegevuse, kui tal tuleb BOOST tegevus
      */
-    public void ryndeBoost() {
+    public void ryndeBoost(LahinguTulemus info) {
         int boost = 2;
 
         this.setRynda_dmg(this.getRynda_dmg() + boost);
     }
+
+    /**
+     * Vastase elude kaotamise funktsioon
+     * @param dmg -- Mitu elu kaotab
+     * @param info -- Paketi klassike, kuhu salvestatakse juhtunu info.
+     */
+    public void kaotaElud(int dmg, LahinguTulemus info) {
+        super.kaotaElud(dmg);
+        info.lisaVastaseLause(this.getNimi() + " kaotas " + dmg + " elu.");
+    }
+
+
 
     // Ründe ja kaitse lausete sättijad
 

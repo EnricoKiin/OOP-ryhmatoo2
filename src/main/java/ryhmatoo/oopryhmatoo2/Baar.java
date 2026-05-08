@@ -10,8 +10,6 @@ import javafx.scene.control.TextArea;
  */
 public class Baar extends Vastane {
 
-    private TextArea teadeteLogi;
-
     public Baar(String nimi, int elud, double kaitseProtsent, int rynda_dmg) {
         super(nimi, elud, kaitseProtsent, rynda_dmg);
         lisaRyndelaused();
@@ -22,11 +20,11 @@ public class Baar extends Vastane {
      * Boostib ründe dmg, kuni surmani. Vt Vastase klassi, et näha kui palju
      */
     @Override
-    public void ryndeBoost() {
-        super.ryndeBoost();
+    public void ryndeBoost(LahinguTulemus info) {
+        super.ryndeBoost(info);
 
-        Platform.runLater(() -> teadeteLogi.appendText(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema" + "\n"));
-        Platform.runLater(() -> teadeteLogi.appendText(this.toString() + " ründab tugevamalt!" + "\n"));
+        info.lisaVastaseLause(this.toString() + " sai turvamehe juurde. Pead ettevaatlikum olema");
+        info.lisaVastaseLause(this.toString() + " ründab tugevamalt!");
     }
 
     /**
@@ -65,20 +63,20 @@ public class Baar extends Vastane {
      * Baari elude kaotamise loogika. Kasutab ülemklassi, et elusid kaotada, aga alamklassi ülekattet
      * et lauseid välja öelda
      * @param dmg -- Kuib palju elusid kaotab. Alati positiivne arv
+     * @param info -- Vaike klass, mis teeskleb end pakettiks ja liigutab infot ringi.
      */
     @Override
-    public void kaotaElud(int dmg) {
+    public void kaotaElud(int dmg, LahinguTulemus info) {
         if (this.getTegevus()==Tegevus.KAITSE)
-            Platform.runLater(() -> teadeteLogi.appendText("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu." + "\n"));
+            info.lisaVastaseLause("Turvamees märkas sind - " + this.getNimi() + " kaotas ainult " + dmg + " elu.");
         else {
             // Lausete valik listist
             List<String> kaitselaused = this.getKaitselaused();
             int lauseValik = (int) (Math.random() * kaitselaused.size());
 
-            Platform.runLater(() -> teadeteLogi.appendText(kaitselaused.get(lauseValik) + "\n"));
-            Platform.runLater(() -> teadeteLogi.appendText(this.getNimi() + " kaotas " + dmg + " elu." + "\n"));
+            info.lisaVastaseLause(kaitselaused.get(lauseValik));
         }
 
-        super.kaotaElud(dmg);
+        super.kaotaElud(dmg, info);
     }
 }

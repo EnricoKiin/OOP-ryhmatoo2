@@ -39,6 +39,7 @@ public class Tegelane {
     /**
      * Võtab vastavalt tegelaselt sisestatud arv elusid ära. EI lähe alla 0
      * @param dmg -- Kuib palju elusid kaotab. Alati positiivne arv
+     * @param info -- Pakett, mis salvestab info. Tähtis alamklasside jaoks
      */
     public void kaotaElud(int dmg) {
         if (this.elud - dmg < 0) {

@@ -1,6 +1,8 @@
 package ryhmatoo.oopryhmatoo2;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,12 +13,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Voitlus  implements StseeniLooja{
 
     private SeanssiHaldur vahetaja;
     private Mäng loogika;
     private ImageView vastasePilt;
+    private TextArea logi = new TextArea();
 
     public Voitlus(SeanssiHaldur vahetaja, Mäng loogika) {
         this.vahetaja = vahetaja;
@@ -27,9 +31,6 @@ public class Voitlus  implements StseeniLooja{
     private ImageView looVastane(Vastane vastane) {
         return new ImageView(new Image(vastane.getNimi() + ".png"));
     }
-
-
-    private TextArea logi = new TextArea();
 
     public TextArea getLogi() {
         return logi;
@@ -112,6 +113,9 @@ public class Voitlus  implements StseeniLooja{
         logi.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.7));
         nupud.prefWidthProperty().bind(alumineAla.widthProperty().multiply(0.3));
 
+        // Algväärtustame teksti seisu
+        valjastaTegelasteInfo();
+
         Scene stseen = new Scene(juur, 1200, 720);
         return stseen;
 
@@ -156,10 +160,101 @@ public class Voitlus  implements StseeniLooja{
 
     private void teeTegevus(Tegevus tudengiTegevus) {
 
+        puhastaLogi();
+
         // Iga kord otsustame suvaliselt vastase tegevuse ja määrame tudengi oma
         loogika.otsustaVastaseTegevus();
         loogika.setTudengiOtsus(tudengiTegevus);
 
-        loogika.lahing();
+        LahinguTulemus tulemus = loogika.lahing();
+
+        kajastaLahinguTulemus(tulemus);
+        PauseTransition maga = new PauseTransition(new Duration(5000));
+
+        maga.setOnFinished(e -> valjastaTegelasteInfo());
+        maga.play();
+
+    }
+
+    /**
+     * Väljastab hetkeste tegelaste elude seisu ja nimed
+     */
+    private void valjastaTegelasteInfo() {
+        puhastaLogi();
+        StringBuilder info = new StringBuilder(100);
+
+        info.append(loogika.getVastane().toString() + ": " + loogika.getVastane().getElud() + "hp" + "\n");
+        info.append(loogika.getTudeng().toString() + ": " + loogika.getTudeng().getElud() + "hp" + "\n");
+
+        logi.appendText(info.toString());
+    }
+
+    /**
+     * Paneb tekstikasti lahingu tulemuse info
+     * @param tulemus
+     */
+    private void kajastaLahinguTulemus(LahinguTulemus tulemus) {
+        StringBuilder info = new StringBuilder(200);
+        info.append(tulemus.getTudengLause());
+
+        // Kui tudengi lauseid pole ainult siis panema tühja rea vahele
+        if (!info.isEmpty()) info.append("\n");
+        info.append(tulemus.getVastaseLause());
+
+        logi.appendText(info.toString());
+
+        PauseTransition maga = new PauseTransition(new Duration(5000));
+
+        maga.setOnFinished(e -> {
+            if (tulemus.getSurnud() == null) return;
+
+            if (tulemus.getSurnud().equals(tulemus.getVastane())) {
+                voit(tulemus);
+            }
+            else if (tulemus.getSurnud().equals(tulemus.getTudeng())) {
+                kaotus(tulemus);
+            }
+        });
+
+        maga.play();
+
+    }
+
+    /**
+     * Kui tudeng suri, siis anname teade, et ta kaotas
+     * @param tulemus -- Pakett kus info, et mis juhtus
+     */
+    private void kaotus(LahinguTulemus tulemus) {
+        puhastaLogi();
+        StringBuilder info = new StringBuilder(100);
+
+        info.append("Surid ära!\n");
+        info.append("Lõpetasid: " + tulemus.getTudeng().getPunkte() + " punktiga" + "\n");
+
+        logi.appendText(info.toString());
+    }
+
+    /**
+     * Meetod, mis aktiveerub, kui tudeng tappis vastase.
+     * Ütleb palju punkte tudeng sai ja kasutab vastavaid meetode, et neid lisada
+     */
+    private void voit(LahinguTulemus tulemus) {
+        puhastaLogi();
+        StringBuilder info = new StringBuilder(100);
+
+        int vastasePunktid = tulemus.getVastane().getPunkteVaart();
+        info.append("Tapsid ära " + tulemus.getVastane().toString() + "\n");
+        info.append("Teenisid " + vastasePunktid + " punkti!");
+        tulemus.getTudeng().lisaPunkte(vastasePunktid);
+
+        logi.appendText(info.toString());
+
+    }
+
+    /**
+     * Puhastab teksti ala. Peab appendima, muidu läheb läbi ainult viimane tekst setText puhul
+     */
+    private void puhastaLogi() {
+        logi.appendText("\n".repeat(15));
     }
 }
