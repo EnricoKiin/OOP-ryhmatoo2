@@ -1,10 +1,8 @@
 package ryhmatoo.oopryhmatoo2;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -12,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -98,9 +97,25 @@ public class Voitlus  implements StseeniLooja{
         nupud.add(raviNupp);
 
 
-        rundaNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RYNDA));
-        kaitseNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.KAITSE));
-        raviNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RAVI));
+        // Nupud püüavad kui liiga palju nuppe vajutatud
+        rundaNupp.setOnMouseClicked(e -> {
+            try{
+                teeTegevus(Tegevus.RYNDA);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
+        kaitseNupp.setOnMouseClicked(e -> {
+            try{
+                teeTegevus(Tegevus.KAITSE);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
+        raviNupp.setOnMouseClicked(e -> {
+            try {
+                teeTegevus(Tegevus.RAVI);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
 
 
         VBox nupud = new VBox(10, rundaNupp, kaitseNupp, raviNupp);
@@ -173,7 +188,8 @@ public class Voitlus  implements StseeniLooja{
 
     private void teeTegevus(Tegevus tudengiTegevus) {
         if (tegevusKaib) {
-            karistus();
+            muudaNuppudeOlek(false);
+            throw new NuppuErind("Klound oled!");
         }
         tegevusKaib = true;
         puhastaLogi();
@@ -198,8 +214,28 @@ public class Voitlus  implements StseeniLooja{
     }
 
     private void karistus() {
-        muudaNuppudeOlek(false);
-        
+        Stage lava = new Stage();
+
+        Pane juur = new Pane();
+
+        // Tausta loomine
+        ImageView kloun = new ImageView(new Image("Kloun.png"));
+        juur.getChildren().add(kloun);
+
+        kloun.fitWidthProperty().bind(juur.widthProperty());
+        kloun.fitHeightProperty().bind(juur.heightProperty());
+
+        kloun.setPreserveRatio(false);
+
+        //Ai abiga saadud info, kuidas kasutaja ekraani suurust saada
+        Rectangle2D ekraaniSuurus = Screen.getPrimary().getVisualBounds();
+        double korgus = ekraaniSuurus.getHeight();
+        double laius = ekraaniSuurus.getWidth();
+
+        Scene stseen = new Scene(juur, laius, korgus);
+        lava.setTitle("Vaata seda klouni!");
+        lava.setScene(stseen);
+        lava.show();
     }
 
     private void voiduKontroll(LahinguTulemus tulemus) {
