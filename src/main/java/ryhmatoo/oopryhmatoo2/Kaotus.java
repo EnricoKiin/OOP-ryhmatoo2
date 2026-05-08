@@ -27,6 +27,7 @@ public class Kaotus implements StseeniLooja{
                 "you_died.jpg"
         );
 
+        // taustapildi seaded AI-lt
         BackgroundImage taust = new BackgroundImage(
                 pilt,
                 BackgroundRepeat.NO_REPEAT,
@@ -60,6 +61,7 @@ public class Kaotus implements StseeniLooja{
         -fx-padding: 10;
         """);
 
+        // kodu nupule vajutades, viib tagasi Stardimenüüsse
         koduNupp.setOnAction(e -> {
             vahetaja.vahetaStseen("START");
         });

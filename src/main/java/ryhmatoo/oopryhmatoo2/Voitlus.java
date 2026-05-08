@@ -135,7 +135,7 @@ public class Voitlus  implements StseeniLooja{
         nupud.setAlignment(Pos.CENTER); // keskele
 
 
-        // teksti "konsool"
+        // teksti "konsool" - sain omadused AI-lt (editable, wraptext)
         logi.setEditable(false); // mängija ei saa sinna ise kirjutada
         logi.setWrapText(true); // tekst läheb järgmisele reale, kui aken saab läbi
 
