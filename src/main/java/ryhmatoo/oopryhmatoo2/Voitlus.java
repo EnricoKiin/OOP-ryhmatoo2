@@ -1,9 +1,6 @@
 package ryhmatoo.oopryhmatoo2;
 
 import javafx.animation.PauseTransition;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -100,9 +97,25 @@ public class Voitlus  implements StseeniLooja{
         nupud.add(raviNupp);
 
 
-        rundaNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RYNDA));
-        kaitseNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.KAITSE));
-        raviNupp.setOnMouseClicked(e -> teeTegevus(Tegevus.RAVI));
+        // Nupud püüavad kui liiga palju nuppe vajutatud
+        rundaNupp.setOnMouseClicked(e -> {
+            try{
+                teeTegevus(Tegevus.RYNDA);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
+        kaitseNupp.setOnMouseClicked(e -> {
+            try{
+                teeTegevus(Tegevus.KAITSE);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
+        raviNupp.setOnMouseClicked(e -> {
+            try {
+                teeTegevus(Tegevus.RAVI);
+            }
+            catch (NuppuErind i) {karistus();}
+        });
 
 
         VBox nupud = new VBox(10, rundaNupp, kaitseNupp, raviNupp);
@@ -175,7 +188,8 @@ public class Voitlus  implements StseeniLooja{
 
     private void teeTegevus(Tegevus tudengiTegevus) {
         if (tegevusKaib) {
-            karistus();
+            muudaNuppudeOlek(false);
+            throw new NuppuErind("Klound oled!");
         }
         tegevusKaib = true;
         puhastaLogi();
@@ -200,8 +214,6 @@ public class Voitlus  implements StseeniLooja{
     }
 
     private void karistus() {
-        muudaNuppudeOlek(false);
-
         Stage lava = new Stage();
 
         Pane juur = new Pane();
