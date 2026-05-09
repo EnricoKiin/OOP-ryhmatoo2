@@ -95,8 +95,10 @@ public class Stardimenuu implements StseeniLooja{
         mangiNupp.setOnAction(e -> vahetaja.vahetaStseen("NIMI"));
         edetabel.setOnMouseClicked(e -> {
 
-            this.edetabel.uuendaTabelit();
+            //Sellises järjekorras, et edetabeli vea puhul jõuaks tagasi starti
             vahetaja.vahetaStseen("EDETABEL");
+            this.edetabel.uuendaTabelit();
+
         });
 
 

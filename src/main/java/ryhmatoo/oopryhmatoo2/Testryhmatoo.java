@@ -26,7 +26,6 @@ public class Testryhmatoo extends Application {
     public void start(Stage lava) throws StseeniErind {
 
         SeanssiHaldur vahetaja = new SeanssiHaldur(lava);
-
         // Ekraanide loome
         Edetabel edetabel = new Edetabel(vahetaja);
         Stardimenuu algus = new Stardimenuu(vahetaja, edetabel);

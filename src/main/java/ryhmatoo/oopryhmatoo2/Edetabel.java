@@ -1,5 +1,6 @@
 package ryhmatoo.oopryhmatoo2;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -44,8 +46,12 @@ public class Edetabel implements StseeniLooja{
         try {
             tulemused.addAll(loeSisse());
         }
+        // Vea puhul näitame seda ja suuname tagasi stardimenüüle
         catch (IOException e) {
-
+            edetabeliVigaPopUp();
+            vahetaja.vahetaStseen("START");
+            // jätame tühja edetabeli
+            return new ScrollPane();
         }
 
         //ScrollPane kasutamise idee on saaud AI käes
@@ -60,13 +66,14 @@ public class Edetabel implements StseeniLooja{
         tabel.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         //Päise rida
+        //Hetkel pole kasutuses, aga jätsin siia ikka, kui tekib tahtmine
         /*
         HBox pais = new HBox(10);
-        Text piaseKoht = new Text("Koht");
+        Text paiseKoht = new Text("Koht");
         Text paiseNimi = new Text("Nimi");
         Text paisePunkte = new Text("Punkte");
         pais.setAlignment(Pos.CENTER);
-        pais.getChildren().addAll(piaseKoht, paiseNimi, paisePunkte);
+        pais.getChildren().addAll(paiseKoht, paiseNimi, paisePunkte);
         read.getChildren().add(pais);
 
          */
@@ -109,6 +116,28 @@ public class Edetabel implements StseeniLooja{
                 )
         ));*/
         return tabel;
+    }
+
+    /**
+     * Kui juhtub edetabeli info hankimisel viga, siis näitame veateadet kasutajale
+     */
+    private void edetabeliVigaPopUp() {
+        Stage lava = new Stage();
+        StackPane juur = new StackPane();
+        Text tekst = new Text("Edetabeli info saamisel tekkis viga");
+        tekst.setFont(Font.font(18));
+
+        // Lisamine ja asukoht
+        juur.getChildren().add(tekst);
+        StackPane.setAlignment(tekst, Pos.CENTER);
+
+        // Taust
+        juur.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        Scene stseen = new Scene(juur, 300, 200);
+        lava.setTitle("Edetabeli viga");
+        lava.setScene(stseen);
+        lava.show();
     }
 
     /**

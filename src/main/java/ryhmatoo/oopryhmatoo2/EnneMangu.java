@@ -4,10 +4,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+
+import java.io.File;
 
 public class EnneMangu implements StseeniLooja{
 
@@ -94,17 +104,60 @@ public class EnneMangu implements StseeniLooja{
 
         });
 
+        //Klava event
+        Label saladus = new Label("Mida iganes sa teed ära vajut g tähte");
+        saladus.setFont(Font.font(18));
+
         sisu.getChildren().addAll(
                 nimiSilt,
                 nimiVäli,
                 captchaSilt,
                 captchaVäli,
                 alustaNupp,
-                veaSilt
+                veaSilt,
+                saladus
         );
 
         Scene stseen = new Scene(sisu, 1200, 720);
+
+        //AI abiga sain teada, et vaja teha läbi eventFilter, sest tavalise setOnKeyPressed ei saanud hakkama
+        stseen.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.G) {
+                klavaPopUp();
+            }
+        });
+
         return stseen;
+
+    }
+
+
+    /**
+     * Karistab kasutajat selle eest, et ta julges vajutada keelatud tähte
+     * Gnobbling gnome
+     */
+    private void klavaPopUp() {
+        Stage lava = new Stage();
+        Pane juur = new Pane();
+
+        // AI abiga, sain java.fx.media ning selle abil loodud video esitamise viisi
+        Media meedia = new Media(getClass().getResource("/gnome.mp4").toExternalForm());
+
+        MediaPlayer player = new MediaPlayer(meedia);
+        MediaView view = new MediaView(player);
+
+        juur.getChildren().add(view);
+
+        //Suurus
+        view.fitHeightProperty().bind(juur.heightProperty());
+        view.fitWidthProperty().bind(juur.widthProperty());
+        view.setPreserveRatio(false);
+
+        Scene stseen = new Scene(juur, 600, 600);
+        lava.setTitle("Gnome");
+        lava.setScene(stseen);
+        lava.show();
+        player.play();
 
     }
 }
