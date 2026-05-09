@@ -125,10 +125,10 @@ public class EnneMangu implements StseeniLooja{
 
         //AI abiga sain teada, et vaja teha läbi eventFilter, sest tavalise setOnKeyPressed ei saanud hakkama
         stseen.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-            if (gnome % 10 == 0 && e.getCode() == KeyCode.G) {
-                klavaPopUp();
+            if (e.getCode() == KeyCode.G) {
+                if (gnome % 10 == 0) klavaPopUp();
+                gnome++;
             }
-            gnome++;
         });
 
         return stseen;
