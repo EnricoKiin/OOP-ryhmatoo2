@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,6 +73,7 @@ public class Voit implements StseeniLooja {
         -fx-background-color: darkred;
         -fx-padding: 10;
         """);
+
 
         // kodu nupule vajutades, viib tagasi Stardimenüüsse
         koduNupp.setOnAction(e -> {
@@ -164,6 +166,9 @@ public class Voit implements StseeniLooja {
         // AI abil Pane-ide ja Boxide loomine ning paigutamine
         VBox box = new VBox(20, congrats, punkteLabel, salvestaNupp);
         box.setAlignment(Pos.CENTER);
+
+        // et kodunupule läbi boxi vajutada saaks - idee AI-lt
+        box.setPickOnBounds(false);
 
         box.setTranslateY(-120);
 

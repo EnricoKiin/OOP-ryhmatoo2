@@ -42,7 +42,7 @@ public class Mäng {
      * @param tudengiNimi -- Tudengi nimi
      */
     public Mäng(String tudengiNimi) {
-        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5); // 5
+        this.tudeng = new Tudeng(tudengiNimi,20, 0.5, 5);
         this.vastased = new ArrayList<>();
         looVastased();
 
