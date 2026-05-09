@@ -3,6 +3,7 @@ package ryhmatoo.oopryhmatoo2;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -56,13 +57,16 @@ public class Kaotus implements StseeniLooja{
         koduPilt.setPreserveRatio(true);
 
         Button koduNupp = new Button();
-
         koduNupp.setGraphic(koduPilt);
 
         koduNupp.setStyle("""
         -fx-background-color: darkred;
         -fx-padding: 10;
         """);
+
+        // AI lahendus probleemile, et ainult alumine osa nupust töötas
+        koduNupp.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        koduNupp.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         // kodu nupule vajutades, viib tagasi Stardimenüüsse
         koduNupp.setOnAction(e -> {
