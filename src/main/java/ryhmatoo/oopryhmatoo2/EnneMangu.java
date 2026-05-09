@@ -22,9 +22,12 @@ import java.io.File;
 public class EnneMangu implements StseeniLooja{
 
     private SeanssiHaldur vahetaja;
+    private int gnome;
 
     public EnneMangu(SeanssiHaldur vahetaja) {
         this.vahetaja = vahetaja;
+        // Ainult selleks et piirata gnome arvu
+        gnome = 0;
     }
 
     /**
@@ -122,9 +125,10 @@ public class EnneMangu implements StseeniLooja{
 
         //AI abiga sain teada, et vaja teha läbi eventFilter, sest tavalise setOnKeyPressed ei saanud hakkama
         stseen.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-            if (e.getCode() == KeyCode.G) {
+            if (gnome % 10 == 0 ||e.getCode() == KeyCode.G) {
                 klavaPopUp();
             }
+            gnome++;
         });
 
         return stseen;
